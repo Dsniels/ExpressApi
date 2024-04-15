@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-
+const users = require('./Routes/Api/User');
+const passport = require('passport');
 const app = express();
 
 app.use(bodyParser.urlencoded({
@@ -18,6 +19,9 @@ app.use((req, res, next) => {
      }
      next();
 });
+
+app.use(passport.initialize());
+app.use("/api/users", users);
 
 app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
