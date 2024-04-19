@@ -3,7 +3,7 @@ const express = require('express');
 const auth = require('../Auth/auth.service');
 const router = express.Router();
 
-router.get('/', auth.hasRole("user"), controller.shor);
+router.get('/', auth.hasRole("user"), controller.show);
 
 router.post('/registrarse', controller.registerUser);
 
