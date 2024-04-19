@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('./user.model');
 const { response } = require('express');
+const keys = require('../../../config/keys');
 
 function handleError(res, err){
     return res.send(500,err);
@@ -12,17 +13,17 @@ exports.registerUser = (request, response) => {
     //Form Validation
 
     User.findOne({email: request.body.email}).then( user => {
+        console.log('ejecutando');
         if(user){
             return response.status(400).json({email : "El email ya existe"});
         } else {
-            const { password, role, email, name } = req.body;
+            const { password, role, email, name } = request.body;
             const newUser = new User({
                 name,
                 email,
                 password,
                 role
             });
-
 
             //Hash password
             bcrypt.genSalt(10, (err, salt) => {
@@ -35,7 +36,7 @@ exports.registerUser = (request, response) => {
                 });
             });
         }
-    });
+    }).catch(err => console.log(err));
 };
 
 
@@ -64,7 +65,7 @@ exports.loginUser = (request, response) => {
                     (err,token) => {
                         response.json({
                             success : true,
-                            token : 'Bearer' + token
+                            token : 'Bearer ' + token
                         });
                     }
                 );
@@ -77,17 +78,12 @@ exports.loginUser = (request, response) => {
 };
 
 
-exports.show = function(req,response)  {
-    User.findById(req.user._id).exec(function(err, user){
-        if(err){
-            return handleError(response, err);
-        }
-
+exports.show = async function(req,response)  {
+    const user = await User.findById(req.user._id).exec();
         if(!user) {
             return response.send(404);
         }
-
         return response.json(user);
-    });
+    
 };
 
