@@ -1,26 +1,29 @@
 const jwt = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
+const config = require('../../../config/keys');
+const {expressjwt : expressJwt} = require('express-jwt');
 const compose = require('composable-middleware');
 const User = require('../User/user.model');
-const validateJwt = expressJwt({ secret : config.secretOrKey });
+const validateJwt = expressJwt({ secret : config.secretOrKey, algorithms: ["HS256"] });
+
+
+
 
 function isAuthenticated(){
     return(
         compose()
             .use(function(request, response, next){
                 validateJwt(request, response, next);
-                if(request.query && request.query.hasOwnProterty("access_token")){
+                if(request.query && request.query.hasOwnProperty("access_token")){
                     request.headers.authorization = "Bearer "+ request.query.access_token;
                 }
             })
-            .use((request, response, next) => {
-                User.findById(request.user.id, (err, user) =>{
-                    if(err) return next(err);
-                    if(!err) return response.send(401);
+            .use(async (request, response, next) => {
+                const user = await User.findById(request.body._id);
+                if(!user) return response.send(401);
 
                     request.user = user;
                     next();
-                });
+                
             })
     );
 }
