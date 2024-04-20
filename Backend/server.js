@@ -4,6 +4,7 @@ const users = require('./Routes/Api/User');
 const passport = require('passport');
 const app = express();
 const mongoose = require('mongoose');
+const producto = require('./Routes/Api/Productos');
 
 app.use(bodyParser.urlencoded({
     extended : false
@@ -27,15 +28,14 @@ mongoose.connect(db)
         .then(()=> console.log('MongoDb conectado'))
         .catch(err => console.log(err));
 
-
-
 app.use(passport.initialize());
 app.use("/api/users", users);
-
+app.use("/api/productos", producto);
 app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
     next();
 });
+
 
 app.get('/', (req, res) => {
     res.send('Hola');
