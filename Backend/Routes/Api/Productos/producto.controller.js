@@ -34,7 +34,6 @@ exports.getProducts = async (request, response) => {
     
     var query = request.query;
 
-
     const productos = await Producto.find(query);
     
     if(!productos){
