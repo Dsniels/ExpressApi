@@ -31,11 +31,24 @@ exports.getProduct = async (request, response) => {
 
 
 exports.getProducts = async (request, response) => {
-    
-    var query = request.query;
 
-    const productos = await Producto.find(query);
-    
+    const page = request.query.page*1 || 1;
+    const pageSize = request.query.pageSize*1 || 2;
+    const skip = (page-1) * pageSize;
+    const query = request.query;
+    const exclude = ['sort', 'page', 'limit'];
+    const queryObj = {...query};
+    exclude.forEach(element => {
+        delete queryObj[element];
+    });
+    JSON.stringify(queryObj)
+
+    let productos = await Producto.find(queryObj)
+        //Ordenamiento
+        .sort(request.query.sort)
+        //Paginacion
+        .skip(skip).limit(pageSize)
+
     if(!productos){
         return response.send(404);
     }
