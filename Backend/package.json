@@ -16,6 +16,7 @@
     "composable-middleware": "^0.3.1",
     "express": "^4.19.2",
     "express-jwt": "^8.4.1",
+    "javascript-state-machine": "^3.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
     "nodemon": "^3.1.0",
