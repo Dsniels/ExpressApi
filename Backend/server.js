@@ -6,12 +6,12 @@ const app = express();
 const mongoose = require('mongoose');
 const producto = require('./Routes/Api/Productos');
 
+
 app.use(bodyParser.urlencoded({
     extended : false
 }));
 
 app.use(bodyParser.json());
-
 app.use((req, res, next) => {
      res.header("Access-Control-Allow-Origin", "*");
      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 });
 
 const db = require('./config/keys').mongoUrl;
-
 mongoose.connect(db)
         .then(()=> console.log('MongoDb conectado'))
         .catch(err => console.log(err));
@@ -34,11 +33,6 @@ app.use("/api/productos", producto);
 app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
     next();
-});
-
-
-app.get('/', (req, res) => {
-    res.send('Hola');
 });
 
 app.listen(3000, () => console.log('aplicacion esta corriendo en el puerto 3000'));
