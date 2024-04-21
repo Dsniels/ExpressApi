@@ -32,3 +32,9 @@ exports.orden = async (request, response) => {
     if(!orden) return response.json({message : 'la orden no existe'});
     return response.send(orden);
 }
+
+exports.eliminarOrden = async (request, response) => {
+    const orden = await Orden.findByIdAndDelete(request.query.id);
+    return response.send(orden);
+}
+
