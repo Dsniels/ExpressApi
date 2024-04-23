@@ -1,6 +1,15 @@
 # ExpressApi Plantilla Ecommerce con MongoDb
 
-**abrir Issues para sugerencias o ayuda**
+**abrir un Issues para sugerencias o ayuda**
+**en el archivo keys ingresar la url de mongodb, secretOrKey para token y array con los roles, de este modo:**
+
+module.exports = {
+    mongoUrl : 'mongodb+url',
+    secretOrKey : 'secret',
+    userRoles: ['user', 'manager']
+};
+
+
 
 ## Endpoints
  - Usuarios *al iniciar sesion o registrarse se crea el token con el role definido*
