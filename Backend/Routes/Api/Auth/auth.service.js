@@ -23,7 +23,7 @@ function isAuthenticated(){
                 console.log('checando por usuario');
                // console.log(request);
                 
-                console.log(request.user);
+                console.log(request.auth);
                 const user = await User.findById(request.auth.id);
                 if(!user) return response.sendStatus(401);
                     console.log(user);
