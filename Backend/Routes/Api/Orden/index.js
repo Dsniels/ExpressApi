@@ -4,3 +4,4 @@ const router = express.Router();
 
 
 router.get('/', controller.mostrarOrdenes);
+router.get('/:id', controller.mostrarOrdenPorId);
