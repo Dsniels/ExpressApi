@@ -64,7 +64,7 @@ exports.loginUser = (request, response) => {
                     (err,token) => {
                         response.json({
                             success : true,
-                            token : 'Bearer ' + token
+                            token :   token
                         });
                     }
                 );
@@ -89,11 +89,9 @@ exports.show = async function(req,response)  {
 
 exports.showUsers = async (request, response) => {
     
-  const users = await User.find();
+  const users = await paginacion(User.find(), request.query);
 
   if(!users) return response.status(404).json({message : 'No hay usuarios'});
-
-  users = paginacion(users, request.query);
 
   return response.json(users);
 }
