@@ -1,4 +1,6 @@
 const Producto = require('./producto.model');
+const paginacion = require('../Specificaciones/Paginacion');
+
 
 exports.registrarProducto = (request, response) => {
     console.log("agregando producto");
@@ -24,7 +26,6 @@ exports.getProduct = async (request, response) => {
 
 exports.getProducts = async (request, response) => {
 
-
     const query = request.query;
     const exclude = ['sort', 'page', 'limit'];
     const queryObj = {...query};
@@ -35,8 +36,8 @@ exports.getProducts = async (request, response) => {
     let productos = await Producto.find(queryObj)
         //Ordenamiento
         .sort(request.query.sort)
-        //Paginacion
-        .skip(skip).limit(pageSize)
+
+    productos = await paginacion(productos, query);
 
     if(!productos){
         return response.send(404);
