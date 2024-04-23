@@ -1,8 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 const User = require('./user.model');
-const { response } = require('express');
 const keys = require('../../../config/keys');
 
 function handleError(res, err){
