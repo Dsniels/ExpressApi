@@ -5,3 +5,4 @@ const router = express.Router();
 
 router.get('/', controller.mostrarOrdenes);
 router.get('/:id', controller.mostrarOrdenPorId);
+router.put('/actualizar/:id', controller.updateOrden);
