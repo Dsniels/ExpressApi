@@ -13,14 +13,20 @@ function isAuthenticated(){
         compose()
             .use(function(request, response, next){
                 validateJwt(request, response, next);
+                console.log('point');
                 if(request.query && request.query.hasOwnProperty("access_token")){
-                    request.headers.authorization = "Bearer "+ request.query.access_token;
+                    request.headers.authorization = request.query.access_token;
                 }
+                console.log('pass if');
             })
             .use(async (request, response, next) => {
-                const user = await User.findById(request.body._id);
-                if(!user) return response.send(401);
-
+                console.log('checando por usuario');
+               // console.log(request);
+                
+                console.log(request.user);
+                const user = await User.findById(request.auth.id);
+                if(!user) return response.sendStatus(401);
+                    console.log(user);
                     request.user = user;
                     next();
                 
@@ -34,7 +40,9 @@ function hasRole(roleRequired){
 
     return compose()
             .use(isAuthenticated())
-            .use(function meetsRequirements(request, response, next) {
+     
+            .use(function meetsRequirements(request, response, next) {       
+                console.log('autenticado');
                 if(
                     config.userRoles.indexOf(request.user.role) >= 
                     config.userRoles.indexOf(roleRequired)
