@@ -6,9 +6,7 @@ exports.registrarProducto = (request, response) => {
         if(producto){
             return response.status(400).json({name : 'Producto ya existe'});
         }
-
         const newProduct = new Producto({...request.body});
-
         newProduct.save().then(RESPONSE => response.send(RESPONSE)).catch(err => console.log(err));
 
     });
@@ -26,9 +24,7 @@ exports.getProduct = async (request, response) => {
 
 exports.getProducts = async (request, response) => {
 
-    const page = request.query.page*1 || 1;
-    const pageSize = request.query.pageSize*1 || 2;
-    const skip = (page-1) * pageSize;
+
     const query = request.query;
     const exclude = ['sort', 'page', 'limit'];
     const queryObj = {...query};
@@ -63,7 +59,6 @@ exports.updateProducto = async (request, response) => {
 
 
 exports.deleteProducto = async (request, response) => {
-   
     const productoDelete = await Producto.findByIdAndDelete(request.query.id);
     return response.send(productoDelete).json({message: 'producto elimando'});
 }
