@@ -4,7 +4,7 @@ const paginacion = require('../Specificaciones/Paginacion');
 
 
 exports.crearOrden = (request, response) => {
-    const newOrden = new Orden({...request.body, user : request.user._id  });
+    const newOrden = new Orden({...request.body, user : request.auth.id  });
     newOrden.save().then(res => response.send(res)).catch(err => console.log(err));
 };
 
@@ -22,9 +22,8 @@ exports.updateOrden = async (request, response) => {
 
 
 exports.mostrarOrdenes = async (request, response) => {
-    const ordenes = await Orden.find({});
+    const ordenes = await paginacion(Orden.find({}), request.query);
     if(!ordenes) return response.json({message : 'algo salio mal'});
-    ordenes = paginacion(ordenes, request.body);
     return response.send(ordenes);
 }
 
