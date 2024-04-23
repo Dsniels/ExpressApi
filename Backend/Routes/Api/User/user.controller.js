@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./user.model');
 const keys = require('../../../config/keys');
+const paginacion = require('../Specificaciones/Paginacion');
 
 function handleError(res, err){
     return res.send(500,err);
@@ -85,3 +86,14 @@ exports.show = async function(req,response)  {
     
 };
 
+
+exports.showUsers = async (request, response) => {
+    
+  const users = await User.find();
+
+  if(!users) return response.status(404).json({message : 'No hay usuarios'});
+
+  users = paginacion(users, request.query);
+
+  return response.json(users);
+}
