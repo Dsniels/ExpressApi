@@ -6,14 +6,8 @@ exports.registrarProducto = (request, response) => {
         if(producto){
             return response.status(400).json({name : 'Producto ya existe'});
         }
-        const {name, precio, categoria, stock, marca} = request.body;
-        const newProduct = new Producto({
-            name,
-            precio,
-            categoria,
-            stock,
-            marca
-        });
+
+        const newProduct = new Producto({...request.body});
 
         newProduct.save().then(RESPONSE => response.send(RESPONSE)).catch(err => console.log(err));
 
@@ -41,7 +35,6 @@ exports.getProducts = async (request, response) => {
     exclude.forEach(element => {
         delete queryObj[element];
     });
-    JSON.stringify(queryObj)
 
     let productos = await Producto.find(queryObj)
         //Ordenamiento
