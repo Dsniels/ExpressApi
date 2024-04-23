@@ -27,7 +27,7 @@ exports.mostrarOrdenes = async (request, response) => {
     return response.send(ordenes);
 }
 
-exports.orden = async (request, response) => {
+exports.mostrarOrdenPorId = async (request, response) => {
     const orden = await Orden.findById(request.query.id);
     if(!orden) return response.json({message : 'la orden no existe'});
     return response.send(orden);
