@@ -1,8 +1,9 @@
 # ExpressApi Plantilla Ecommerce con MongoDb
 
+**abrir Issues para sugerencias o ayuda**
 
 ## Endpoints
- - Usuarios * al iniciar sesion o registrarse se crea el token con el role definido*
+ - Usuarios *al iniciar sesion o registrarse se crea el token con el role definido*
    - "/api/users/": 
        Informacion del usuario  
    - "api/users/all": 
