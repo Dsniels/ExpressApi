@@ -1,6 +1,6 @@
 
 const Orden = require('./orden.model');
-
+const paginacion = require('../Specificaciones/Paginacion');
 
 
 exports.crearOrden = (request, response) => {
@@ -24,6 +24,7 @@ exports.updateOrden = async (request, response) => {
 exports.mostrarOrdenes = async (request, response) => {
     const ordenes = await Orden.find({});
     if(!ordenes) return response.json({message : 'algo salio mal'});
+    ordenes = paginacion(ordenes, request.body);
     return response.send(ordenes);
 }
 
