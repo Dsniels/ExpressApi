@@ -13,20 +13,16 @@ function isAuthenticated(){
         compose()
             .use(function(request, response, next){
                 validateJwt(request, response, next);
-                console.log('point');
                 if(request.query && request.query.hasOwnProperty("access_token")){
                     request.headers.authorization = request.query.access_token;
                 }
-                console.log('pass if');
+
             })
             .use(async (request, response, next) => {
-                console.log('checando por usuario');
-               // console.log(request);
-                
-                console.log(request.auth);
+
                 const user = await User.findById(request.auth.id);
                 if(!user) return response.sendStatus(401);
-                    console.log(user);
+
                     request.user = user;
                     next();
                 
@@ -42,14 +38,15 @@ function hasRole(roleRequired){
             .use(isAuthenticated())
      
             .use(function meetsRequirements(request, response, next) {       
-                console.log('autenticado');
+
                 if(
+                
                     config.userRoles.indexOf(request.user.role) >= 
                     config.userRoles.indexOf(roleRequired)
                 ){
                     next();   
                 } else {
-                    response.send(403);
+                    response.sendStatus(403);
                 }
             });
 }
