@@ -5,6 +5,7 @@ const passport = require('passport');
 const app = express();
 const mongoose = require('mongoose');
 const producto = require('./Routes/Api/Productos');
+const ordenes = require('./Routes/Api/Orden');
 
 
 app.use(bodyParser.urlencoded({
@@ -30,6 +31,7 @@ mongoose.connect(db)
 app.use(passport.initialize());
 app.use("/api/users", users);
 app.use("/api/productos", producto);
+app.use('/api/ordenes', ordenes);
 app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
     next();
