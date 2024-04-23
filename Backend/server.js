@@ -34,6 +34,13 @@ app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
     next();
 });
+app.use(function(err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send({message: 'No se encontró un token de autorización. Por favor, inicia sesión.'});
+  } else {
+    next(err);
+  }
+});
 
 app.listen(3000, () => console.log('aplicacion esta corriendo en el puerto 3000'));
 
