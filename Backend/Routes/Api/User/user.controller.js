@@ -12,7 +12,7 @@ exports.registerUser = (request, response) => {
     //Form Validation
 
     User.findOne({email: request.body.email}).then( user => {
-        console.log('ejecutando');
+
         if(user){
             return response.status(400).json({email : "El email ya existe"});
         } else {
