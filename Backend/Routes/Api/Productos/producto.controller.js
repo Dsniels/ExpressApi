@@ -33,11 +33,9 @@ exports.getProducts = async (request, response) => {
         delete queryObj[element];
     });
 
-    let productos = await Producto.find(queryObj)
-        //Ordenamiento
-        .sort(request.query.sort)
-
-    productos = await paginacion(productos, query);
+    let consulta =  Producto.find(queryObj).sort(request.query.sort)
+    consulta =  paginacion(consulta, query);
+    const productos = await consulta;
 
     if(!productos){
         return response.send(404);
