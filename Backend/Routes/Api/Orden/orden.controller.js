@@ -4,6 +4,8 @@ const paginacion = require('../Specificaciones/Paginacion');
 
 
 exports.crearOrden = (request, response) => {
+    console.log(request);
+    console.log('creando orden',request.auth);
     const newOrden = new Orden({...request.body, user : request.auth.id  });
     newOrden.save().then(res => response.send(res)).catch(err => console.log(err));
 };
@@ -28,7 +30,8 @@ exports.mostrarOrdenes = async (request, response) => {
 }
 
 exports.mostrarOrdenPorId = async (request, response) => {
-    const orden = await Orden.findById(request.query.id);
+
+    const orden = await Orden.findById(request.params.id);
     if(!orden) return response.json({message : 'la orden no existe'});
     return response.send(orden);
 }
