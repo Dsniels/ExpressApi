@@ -16,3 +16,9 @@ exports.updateCarrito = async (request, response) =>{
     if(!carrito) return response.send({message : 'no hay carrito'})
     return response.send({message:'carrito actualizado', id : carritoID});
 }
+
+exports.deleteCarrito = async (request, response) =>{ 
+    const carritoId = `${request.params.id}`;
+    return response.send(redis.del(carritoId).then(()=>{console.log('eliminado')}).catch(err => console.log(err)));
+   
+}
