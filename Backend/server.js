@@ -8,7 +8,7 @@ const producto = require('./Routes/Api/Productos');
 const ordenes = require('./Routes/Api/Orden');
 const client = require('./config/redis');
 const db = require('./config/keys').mongoUrl;
-
+const carrito = require('./Routes/Api/Carrito');
 //middleware
 app.use(bodyParser.urlencoded({
     extended : false
@@ -40,7 +40,7 @@ mongoose.connect(db).then(()=> console.log('MongoDb conectado')).catch(err => co
 app.use("/api/users", users);
 app.use("/api/productos", producto);
 app.use('/api/ordenes', ordenes);
-
+app.use('/api/carrito', carrito);
 app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
     next();
