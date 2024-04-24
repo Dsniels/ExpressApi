@@ -6,7 +6,7 @@ const paginacion = require('../Specificaciones/Paginacion');
 exports.crearOrden = (request, response) => {
     console.log(request);
     console.log('creando orden',request.auth);
-    const newOrden = new Orden({...request.body, user : request.auth.id  });
+    const newOrden = new Orden({...request.body, user : request.user._id.toHexString()  });
     newOrden.save().then(res => response.send(res)).catch(err => console.log(err));
 };
 
