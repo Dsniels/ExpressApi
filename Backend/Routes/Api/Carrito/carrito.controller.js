@@ -1,21 +1,18 @@
 
 const redis = require('../../../config/redis');
 
-exports.obtenerCarritoId = (request, response) => {
+exports.obtenerCarritoId = async (request, response) => {
     const carritoID  = `carrito:${request.params.id}`;
-    redis.LRANGE(carritoID, 0 ,-1, (err, productos)=>{
-        if(err) return response.send(err);
-        const parseProducts = productos.map(JSON.parse);
-        return response.send(parseProducts);
-    });
+    const carrito = await redis.get(carritoID);
+    if(!carrito) return response.status(404);
+    return response.send(JSON.parse(carrito));
 }
 
-exports.updateCarrito = (request, response) =>{ 
-    console.log(request);
-    const carritoID = `carrito:${request.auth.id}`;
-    const items = request.body.items
-    items.forEach(element => {
-        redis.rPush(carritoID, JSON.stringify(element)).then(()=>console.log('Items insertados: ', carritoID)).catch(err => console.log(err)); 
-    });
-    return response.send();
+exports.updateCarrito = async (request, response) =>{ 
+    console.log(request.user._id.toHexString());
+    const carritoID = `carrito:${request.user._id.toHexString()}`;
+    const items = JSON.stringify(request.body.items);
+    const carrito = await redis.set(carritoID, items)
+    if(!carrito) return response.send({message : 'no hay carrito'})
+    return response.send({message:'carrito actualizado', id : carritoID});
 }
