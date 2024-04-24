@@ -1,5 +1,31 @@
 const mongoose = require('mongoose');
 const Schema  = mongoose.Schema;
+const Producto = require('../Productos/producto.model');
+
+const ordenItem = new Schema({
+    name : {
+        type : String,
+        required : true
+    },
+    categoria : {
+        type : String,
+        required : true
+    },
+    precio : {
+        type : Number,
+        required : true
+    },
+    marca : {
+        type : String, 
+        required : true
+    },
+    cantidad : {
+        type : Number,
+        require: true,
+
+    }
+});
+
 
 const OrdenSchema = new Schema({
     Total :{
@@ -31,7 +57,7 @@ const OrdenSchema = new Schema({
         type : String,
         required : true
     },
-    Productos : [{type : Schema.ObjectId, ref : 'Producto'}],
+    items : [ordenItem],
     user : {
         type : Schema.ObjectId,
         ref : 'User'
