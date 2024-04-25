@@ -14,8 +14,11 @@ exports.crearOrden = (request, response) => {
 exports.updateOrden = async (request, response) => {
     if(request.body._id){
         delete request.body.id;
+    
     }
-    const ordenUpdate = await Orden.findByIdAndUpdate(request.query.id, request.body)
+
+    console.log(request.query)
+    const ordenUpdate = await Orden.findByIdAndUpdate(request.params.id, request.body)
 
     if(ordenUpdate) return response.send(ordenUpdate);
 
@@ -37,7 +40,7 @@ exports.mostrarOrdenPorId = async (request, response) => {
 }
 
 exports.eliminarOrden = async (request, response) => {
-    const orden = await Orden.findByIdAndDelete(request.query.id);
+    const orden = await Orden.findByIdAndDelete(request.params.id);
     return response.send(orden);
 }
 
