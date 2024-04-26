@@ -11,6 +11,8 @@ router.post('/registrarse', controller.registerUser);
 
 router.post("/login", controller.loginUser);
 
+router.put('/actualizar', auth.hasRole('user') ,controller.updateUser);
+
 module.exports = router;
 
 
