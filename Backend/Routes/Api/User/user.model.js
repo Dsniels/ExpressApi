@@ -6,6 +6,10 @@ const UserSchema = new Schema({
         type : String,
         required : true
     },
+    apellido : {
+        type : String,
+        required : true
+    },
     email : {
         type : String,
         required : true
@@ -22,6 +26,10 @@ const UserSchema = new Schema({
     date : {
         type : Date,
         default : Date.now
+    },
+    image : {
+        type: String,
+        default : ''
     }
 });
 
