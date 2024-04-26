@@ -10,19 +10,13 @@ function handleError(res, err){
 
 exports.registerUser = (request, response) => {
     //Form Validation
-
     User.findOne({email: request.body.email}).then( user => {
 
         if(user){
             return response.status(400).json({email : "El email ya existe"});
         } else {
-            const { password, role, email, name } = request.body;
-            const newUser = new User({
-                name,
-                email,
-                password,
-                role
-            });
+        
+            const newUser = new User(request.body);
 
             //Hash password
             bcrypt.genSalt(10, (err, salt) => {
@@ -40,7 +34,6 @@ exports.registerUser = (request, response) => {
 
 
 exports.loginUser = (request, response) => {
-
     const email = request.body.email;
     const password = request.body.password;
 
@@ -94,4 +87,11 @@ exports.showUsers = async (request, response) => {
   if(!users) return response.status(404).json({message : 'No hay usuarios'});
 
   return response.json(users);
+}
+
+exports.updateUser = async (request, response) => {
+
+    const user = await User.findByIdAndUpdate(request.user._id, request.body);
+
+    return response.json(user);
 }
