@@ -40,7 +40,6 @@ function hasRole(roleRequired){
             .use(function meetsRequirements(request, response, next) {       
 
                 if(
-                
                     config.userRoles.indexOf(request.user.role) >= 
                     config.userRoles.indexOf(roleRequired)
                 ){
