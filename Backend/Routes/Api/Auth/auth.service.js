@@ -13,7 +13,7 @@ function isAuthenticated(){
         compose()
             .use(function(request, response, next){
                 validateJwt(request, response, next);
-                if(request.query && request.query.hasOwnProperty("access_token")){
+                if(request.query && Object.prototype.hasOwnProperty.call(request.query, 'access_token')){
                     request.headers.authorization = request.query.access_token;
                 }
 
