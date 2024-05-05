@@ -6,9 +6,15 @@ const app = express();
 const mongoose = require('mongoose');
 const producto = require('./Routes/Api/Productos');
 const ordenes = require('./Routes/Api/Orden');
-const client = require('./config/redis');
 const db = require('./config/keys').mongoUrl;
 const carrito = require('./Routes/Api/Carrito');
+const env = require('dotenv').config();
+const redis  = require('redis');
+
+
+const client = redis.createClient({url : process.env.REDIS_URL});
+client.on('error', err => console.log('Error: ', err));
+client.connect().then(() => console.log('redis conectado')).catch(err => console.log(err));
 //middleware
 app.use(bodyParser.urlencoded({
     extended : false
@@ -24,7 +30,7 @@ app.use((req, res, next) => {
      }
      next();
 });
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     res.status(401).send({message: 'No se encontró un token de autorización. Por favor, inicia sesión.'});
   } else {
@@ -34,7 +40,7 @@ app.use(function(err, req, res, next) {
 
 
 //conexiones
-mongoose.connect(db).then(()=> console.log('MongoDb conectado')).catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URL).then(()=> console.log('MongoDb conectado')).catch(err => console.log(err));
 
 //routas
 app.use("/api/users", users);
