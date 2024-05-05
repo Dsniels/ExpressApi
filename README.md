@@ -3,7 +3,8 @@
 **abrir un Issues para sugerencias o ayuda**
 
 
-**en el archivo keys ingresar la url de mongodb, secretOrKey para token y array con los roles, de este modo:**\
+**en el archivo keys ingresar la url de mongodb, secretOrKey para token y array con los roles, de este modo:**
+
 
 ``` js
 module.exports = {
@@ -12,6 +13,8 @@ module.exports = {
     userRoles: ['user', 'manager']
 };
 ```
+
+**Requiere Redis para almacenar el carrito compra, modificar archivo /config/redis para cambiar la cadena de conexion**
 
 
 ## Endpoints
