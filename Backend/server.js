@@ -43,9 +43,7 @@ app.use((err, req, res, next) => {
 mongoose.connect(process.env.MONGO_URL).then(()=> console.log('MongoDb conectado')).catch(err => console.log(err));
 
 //routas
-app.use('/api/', (req, res, next) =>{
-  res.send('HOLA MUNDO');
-})
+
 app.use("/api/users", users);
 app.use("/api/productos", producto);
 app.use('/api/ordenes', ordenes);
