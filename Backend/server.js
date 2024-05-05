@@ -52,6 +52,6 @@ app.use('/request-type',(req, res, next) => {
     next();
 });
 
-app.listen(3000, () => console.log('aplicacion esta corriendo en el puerto 3000'));
+app.listen(process.env.PORT, () => console.log('aplicacion esta corriendo en el puerto 3000'));
 
 
