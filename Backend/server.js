@@ -52,7 +52,8 @@ app.use('/request-type',(req, res, next) => {
     console.log('request type:', req.method);
     next();
 });
+const port = process.env.PORT || 3000;
 
-app.listen(process.env.PORT, () => console.log('aplicacion esta corriendo en el puerto 3000'));
+app.listen(port, () => console.log('aplicacion esta corriendo en el puerto 3000'));
 
 
