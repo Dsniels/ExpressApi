@@ -10,7 +10,9 @@ const db = require('./config/keys').mongoUrl;
 const carrito = require('./Routes/Api/Carrito');
 const env = require('dotenv').config();
 const redis  = require('redis');
+const cors = require('cors');
 
+app.use(cors());
 
 const client = redis.createClient({url : process.env.REDIS_URL});
 client.on('error', err => console.log('Error: ', err));
