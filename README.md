@@ -41,7 +41,7 @@ module.exports = {
    - "api/users/login": 
        Iniciar sesion
      
-   - "/api/users/registrar": 
+   - "/api/users/registrarse": 
        Crear cuenta
        enviar Json con datos segun user.model.js
      
