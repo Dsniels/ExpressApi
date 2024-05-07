@@ -9,18 +9,16 @@ const ordenes = require('./Routes/Api/Orden');
 const db = require('./config/keys').mongoUrl;
 const carrito = require('./Routes/Api/Carrito');
 const env = require('dotenv').config();
-const redis  = require('redis');
 const cors = require('cors');
+const client = require('./config/redis');
 
-app.use(cors());
 
-const client = redis.createClient({url : process.env.REDIS_URL});
-client.on('error', err => console.log('Error: ', err));
-client.connect().then(() => console.log('redis conectado')).catch(err => console.log(err));
 //middleware
 app.use(bodyParser.urlencoded({
     extended : false
 }));
+app.use(cors());
+
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use((req, res, next) => {
@@ -45,7 +43,6 @@ app.use((err, req, res, next) => {
 mongoose.connect(process.env.MONGO_URL).then(()=> console.log('MongoDb conectado')).catch(err => console.log(err));
 
 //routas
-
 app.use("/api/users", users);
 app.use("/api/productos", producto);
 app.use('/api/ordenes', ordenes);
