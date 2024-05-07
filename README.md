@@ -3,12 +3,17 @@
 **abrir un Issues para sugerencias o ayuda**
 
 
-**en el archivo keys ingresar la url de mongodb, secretOrKey para token y array con los roles, de este modo:**
+**en el archivo .env ingresar la url de mongodby redis**
+```
+MONGO_URL = mongodb+srv://dsnilesalazr:Dasa270512@cluster0.y2dzttg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+REDIS_URL=redis://:UZ2J9W8iGDZoC6lLSayoUPo7nlmtpr2a@redis-11042.c277.us-east-1-3.ec2.redns.redis-cloud.com:11042
+```
+
+**en el archivo keys secretOrKey para token y array con los roles, de este modo:**
 
 
 ``` js
 module.exports = {
-    mongoUrl : 'mongodb+url',
     secretOrKey : 'secret',
     userRoles: ['user', 'manager']
 };
