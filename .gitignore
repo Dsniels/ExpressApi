@@ -1,3 +1,6 @@
 node_modules/
 keys.js
 Backend/.env
+Backend/.vscode/settings.json
+Backend/node_modules/.package-lock.json
+Backend/.deployment
