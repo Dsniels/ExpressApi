@@ -27,7 +27,7 @@ exports.getProduct = async (request, response) => {
 exports.getProducts = async (request, response) => {
 
     const query = request.query;
-    const exclude = ['sort', 'page', 'limit'];
+    const exclude = ['sort', 'page', 'limit','pageSize'];
     const queryObj = {...query};
     exclude.forEach(element => {
         delete queryObj[element];
