@@ -17,7 +17,6 @@ exports.crearOrden = (request, response) => {
 }
 
 exports.updateOrden = async (request, response) => {
-
   try {
     if (request.body._id) {
       delete request.body.id
@@ -60,5 +59,4 @@ exports.eliminarOrden = async (request, response) => {
   } catch (error) {
     return response.send(error)
   }
-
 }
