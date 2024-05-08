@@ -4,10 +4,13 @@ const paginacion = require('../Specificaciones/Paginacion');
 
 
 exports.crearOrden = (request, response) => {
-    console.log(request);
-    console.log('creando orden',request.auth);
-    const newOrden = new Orden({...request.body, user : request.user._id.toHexString()  });
-    newOrden.save().then(res => response.send(res)).catch(err => console.log(err));
+    try {
+        const newOrden = new Orden({...request.body, user : request.user._id.toHexString()});
+        newOrden.save().then(res => response.send(res)).catch(err => response.send(err));
+    } catch (error) {
+        return response.status(500).send("Ocurrio un Error");
+    }
+
 };
 
 
