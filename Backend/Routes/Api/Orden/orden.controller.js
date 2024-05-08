@@ -17,34 +17,48 @@ exports.crearOrden = (request, response) => {
 }
 
 exports.updateOrden = async (request, response) => {
-  if (request.body._id) {
-    delete request.body.id
+
+  try {
+    if (request.body._id) {
+      delete request.body.id
+    }
+    const orden = await Orden.findByIdAndUpdate(
+      request.params.id,
+      request.body
+    )
+    if (orden) return response.status(200).send(orden)
+    else throw new Error('Orden no encontrada')
+  } catch (error) {
+    return response.status(500).send(error)
   }
-
-  console.log(request.query)
-  const ordenUpdate = await Orden.findByIdAndUpdate(
-    request.params.id,
-    request.body
-  )
-
-  if (ordenUpdate) return response.send(ordenUpdate)
-
-  return response.json({ message: 'error al actualizar' })
 }
 
 exports.mostrarOrdenes = async (request, response) => {
-  const ordenes = await paginacion(Orden.find({}), request.query)
-  if (!ordenes) return response.json({ message: 'algo salio mal' })
-  return response.send(ordenes)
+  try {
+    const ordenes = await paginacion(Orden.find({}), request.query)
+    if (ordenes) return response.status(200).send(ordenes)
+    else throw new Error('No hay ordenes que mostrar')
+  } catch (error) {
+    return response.send(error)
+  }
 }
 
 exports.mostrarOrdenPorId = async (request, response) => {
-  const orden = await Orden.findById(request.params.id)
-  if (!orden) return response.json({ message: 'la orden no existe' })
-  return response.send(orden)
+  try {
+    const orden = await Orden.findById(request.params.id)
+    if (!orden) throw new Error('No existe la orden')
+    return response.status(200).send(orden)
+  } catch (error) {
+    return response.send(error)
+  }
 }
 
 exports.eliminarOrden = async (request, response) => {
-  const orden = await Orden.findByIdAndDelete(request.params.id)
-  return response.send(orden)
+  try {
+    const orden = await Orden.findByIdAndDelete(request.params.id)
+    return response.send(orden)
+  } catch (error) {
+    return response.send(error)
+  }
+
 }
