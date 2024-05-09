@@ -7,7 +7,7 @@ exports.crearOrden = (request, response, next) => {
       ...request.body,
       user: request.user._id.toHexString()
     })
-    next();
+    next()
     return response.send(
       newOrden
         .save()
@@ -15,7 +15,7 @@ exports.crearOrden = (request, response, next) => {
         .catch((err) => response.send(err))
     )
   } catch (error) {
-    next();
+    next()
     return response.status(500).send('Ocurrio un Error')
   }
 }
@@ -29,46 +29,46 @@ exports.updateOrden = async (request, response, next) => {
       request.params.id,
       request.body
     )
-    next();
+    next()
     if (orden) return response.status(200).send(orden)
     else throw new Error('Orden no encontrada')
   } catch (error) {
-    next();
+    next()
     return response.status(500).send(error)
   }
 }
 
 exports.mostrarOrdenes = async (request, response, next) => {
   try {
-    const ordenes = await paginacion(Orden.find({}), request.query);
-    next();
+    const ordenes = await paginacion(Orden.find({}), request.query)
+    next()
     if (ordenes) return response.status(200).send(ordenes)
     else throw new Error('No hay ordenes que mostrar')
   } catch (error) {
-    next();
+    next()
     return response.send(error)
   }
 }
 
-exports.mostrarOrdenPorId = async (request, response,  next) => {
+exports.mostrarOrdenPorId = async (request, response, next) => {
   try {
-    const orden = await Orden.findById(request.params.id);
-    if (!orden) throw new Error('No existe la orden');
-    next();
-    return response.status(200).send(orden);
+    const orden = await Orden.findById(request.params.id)
+    if (!orden) throw new Error('No existe la orden')
+    next()
+    return response.status(200).send(orden)
   } catch (error) {
-    next();
+    next()
     return response.send(error)
   }
 }
 
 exports.eliminarOrden = async (request, response, next) => {
   try {
-    const orden = await Orden.findByIdAndDelete(request.params.id);
-    next();
-    return response.send(orden);
+    const orden = await Orden.findByIdAndDelete(request.params.id)
+    next()
+    return response.send(orden)
   } catch (error) {
-    next();
+    next()
     return response.send(error)
   }
 }
