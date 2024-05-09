@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema  = mongoose.Schema;
-const Producto = require('../Productos/producto.model');
+
 
 const ordenItem = new Schema({
     name : {
