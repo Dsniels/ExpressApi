@@ -56,10 +56,12 @@ exports.loginUser = (request, response) => {
             expiresIn: 3123212
           },
           (err, token) => {
+            if(err) throw new Error('Error al general el token');
             response.json({
               success: true,
-              token
-            })
+              user_token: token,
+            });
+
           }
         )
       } else {
