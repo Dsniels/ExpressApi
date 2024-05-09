@@ -4,8 +4,8 @@ const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
 
-exports.registerUser = (request, response) => {
-  // Form Validation
+exports.registerUser = (request, response, next) => {
+
   User.findOne({ email: request.body.email })
     .then((user) => {
       if (user) {
@@ -33,7 +33,7 @@ exports.registerUser = (request, response) => {
   return null
 }
 
-exports.loginUser = (request, response) => {
+exports.loginUser = (request, response, next) => {
   const email = request.body.email
   const password = request.body.password
 
@@ -79,7 +79,7 @@ exports.loginUser = (request, response) => {
   return null
 }
 
-exports.show = async function (req, response) {
+exports.show = async function (req, response, next) {
   const user = await User.findById(req.user._id).exec()
   if (!user) {
     next();
@@ -89,7 +89,7 @@ exports.show = async function (req, response) {
   return response.json(user)
 }
 
-exports.showUsers = async (request, response) => {
+exports.showUsers = async (request, response, next) => {
   const query = request.query
   const exclude = ['sort', 'page', 'limit', 'pageSize']
   const queryObj = { ...query }
@@ -106,7 +106,7 @@ exports.showUsers = async (request, response) => {
   return response.json(users)
 }
 
-exports.updateUser = async (request, response) => {
+exports.updateUser = async (request, response, next) => {
   const user = await User.findByIdAndUpdate(request.user._id, request.body)
   next();
   return response.json(user)

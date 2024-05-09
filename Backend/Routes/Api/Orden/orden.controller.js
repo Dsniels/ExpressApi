@@ -1,7 +1,7 @@
 const Orden = require('./orden.model')
 const paginacion = require('../Specificaciones/Paginacion')
 
-exports.crearOrden = (request, response) => {
+exports.crearOrden = (request, response, next) => {
   try {
     const newOrden = new Orden({
       ...request.body,
@@ -20,7 +20,7 @@ exports.crearOrden = (request, response) => {
   }
 }
 
-exports.updateOrden = async (request, response) => {
+exports.updateOrden = async (request, response, next) => {
   try {
     if (request.body._id) {
       delete request.body.id
@@ -38,7 +38,7 @@ exports.updateOrden = async (request, response) => {
   }
 }
 
-exports.mostrarOrdenes = async (request, response) => {
+exports.mostrarOrdenes = async (request, response, next) => {
   try {
     const ordenes = await paginacion(Orden.find({}), request.query);
     next();
@@ -50,7 +50,7 @@ exports.mostrarOrdenes = async (request, response) => {
   }
 }
 
-exports.mostrarOrdenPorId = async (request, response) => {
+exports.mostrarOrdenPorId = async (request, response,  next) => {
   try {
     const orden = await Orden.findById(request.params.id);
     if (!orden) throw new Error('No existe la orden');
@@ -62,7 +62,7 @@ exports.mostrarOrdenPorId = async (request, response) => {
   }
 }
 
-exports.eliminarOrden = async (request, response) => {
+exports.eliminarOrden = async (request, response, next) => {
   try {
     const orden = await Orden.findByIdAndDelete(request.params.id);
     next();

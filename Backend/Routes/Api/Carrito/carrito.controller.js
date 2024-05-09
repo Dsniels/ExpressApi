@@ -1,6 +1,6 @@
 const redis = require('../../../config/redis')
 
-exports.obtenerCarritoId = async (request, response) => {
+exports.obtenerCarritoId = async (request, response, next) => {
   try {
     const carrito = await redis.get(`carrito:${request.params.id}`)
     next();
@@ -15,7 +15,7 @@ exports.obtenerCarritoId = async (request, response) => {
   }
 }
 
-exports.updateCarrito = async (request, response) => {
+exports.updateCarrito = async (request, response, next) => {
   try {
     const items = JSON.stringify(request.body.items)
     const carrito = await redis.set(

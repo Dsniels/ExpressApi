@@ -1,7 +1,7 @@
 const Producto = require('./producto.model')
 const paginacion = require('../Specificaciones/Paginacion')
 
-exports.registrarProducto = (request, response) => {
+exports.registrarProducto = (request, response, next) => {
   try {
     Producto.findOne({ name: request.body.name }).then((producto) => {
       if (!producto) {
@@ -21,7 +21,7 @@ exports.registrarProducto = (request, response) => {
   }
 }
 
-exports.getProduct = async (request, response) => {
+exports.getProduct = async (request, response, next) => {
   try {
     const producto = await Producto.findById(request.params.id).exec()
     if (!producto) {
@@ -36,7 +36,7 @@ exports.getProduct = async (request, response) => {
   }
 }
 
-exports.getProducts = async (request, response) => {
+exports.getProducts = async (request, response, next) => {
   try {
     const query = request.query
     const exclude = ['sort', 'page', 'limit', 'pageSize']
@@ -62,7 +62,7 @@ exports.getProducts = async (request, response) => {
   }
 }
 
-exports.updateProducto = async (request, response) => {
+exports.updateProducto = async (request, response, next) => {
   try {
     const productoUpdate = await Producto.findByIdAndUpdate(
       request.params.id,
@@ -80,7 +80,7 @@ exports.updateProducto = async (request, response) => {
   }
 }
 
-exports.deleteProducto = async (request, response) => {
+exports.deleteProducto = async (request, response, next) => {
   try {
     await Producto.findByIdAndDelete(request.query.id)
     next();
