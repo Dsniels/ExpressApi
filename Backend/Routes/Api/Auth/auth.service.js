@@ -11,7 +11,7 @@ const validateJwt = expressJwt({ secret : config.secretOrKey, algorithms: ["HS25
 function isAuthenticated(){
     return(
         compose()
-            .use(function(request, response, next){
+            .use((request, response, next)=>{
                 validateJwt(request, response, next);
                 if(request.query && Object.prototype.hasOwnProperty.call(request.query, 'access_token')){
                     request.headers.authorization = request.query.access_token;
@@ -37,7 +37,7 @@ function hasRole(roleRequired){
     return compose()
             .use(isAuthenticated())
      
-            .use(function meetsRequirements(request, response, next) {       
+            .use((request, response, next) => {       
 
                 if(
                     config.userRoles.indexOf(request.user.role) >= 
@@ -63,6 +63,7 @@ function setTokenCookie(request, response){
     const token = signToken(request.user._id);
     response.cookie("token", JSON.stringify(token));
     response.redirect("/");
+    return response.status(200);
 }
 
 

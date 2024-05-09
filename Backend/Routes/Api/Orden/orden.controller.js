@@ -7,10 +7,10 @@ exports.crearOrden = (request, response) => {
       ...request.body,
       user: request.user._id.toHexString()
     })
-    newOrden
+    return response.send(newOrden
       .save()
       .then((res) => response.send(res))
-      .catch((err) => response.send(err))
+      .catch((err) => response.send(err)))
   } catch (error) {
     return response.status(500).send('Ocurrio un Error')
   }
