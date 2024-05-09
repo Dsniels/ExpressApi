@@ -4,9 +4,6 @@ const User = require("./user.model");
 const keys = require("../../../config/keys");
 const paginacion = require("../Specificaciones/Paginacion");
 
-function handleError(res, err) {
-  return res.send(500, err);
-}
 
 exports.registerUser = (request, response) => {
   //Form Validation
@@ -24,13 +21,14 @@ exports.registerUser = (request, response) => {
             newUser.password = hash;
             newUser
               .save()
-              .then((user) => response.json())
-              .catch((error) => console.log(err));
+              .then((user) => response.json(user))
+              .catch((error) => console.log(error));
           });
         });
       }
     })
     .catch((err) => console.log(err));
+    return null;
 };
 
 exports.loginUser = (request, response) => {
@@ -71,6 +69,7 @@ exports.loginUser = (request, response) => {
       }
     });
   });
+  return null;
 };
 
 exports.show = async function (req, response) {
