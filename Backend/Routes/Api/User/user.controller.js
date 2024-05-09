@@ -4,6 +4,7 @@ const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
 
+
 exports.registerUser = (request, response) => {
   // Form Validation
   User.findOne({ email: request.body.email })
@@ -20,14 +21,18 @@ exports.registerUser = (request, response) => {
             newUser.password = hash
             newUser
               .save()
+
               .then((user) => response.json(user))
               .catch((error) => console.log(error))
+
           })
         })
       }
     })
     .catch((err) => console.log(err))
+
   return null
+
 }
 
 exports.loginUser = (request, response) => {
@@ -71,7 +76,9 @@ exports.loginUser = (request, response) => {
       }
     })
   })
+
   return null
+
 }
 
 exports.show = async function (req, response) {

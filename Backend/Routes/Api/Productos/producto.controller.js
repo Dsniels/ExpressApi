@@ -2,6 +2,7 @@ const Producto = require('./producto.model')
 const paginacion = require('../Specificaciones/Paginacion')
 
 exports.registrarProducto = (request, response) => {
+
   try {
     Producto.findOne({ name: request.body.name }).then((producto) => {
       if (!producto) {
@@ -79,4 +80,5 @@ exports.deleteProducto = async (request, response) => {
       .status(500)
       .send('No se pudo eliminar el producto, intente mas tarde')
   }
+
 }
