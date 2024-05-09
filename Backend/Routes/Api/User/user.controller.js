@@ -4,7 +4,6 @@ const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
 
-
 exports.registerUser = (request, response) => {
   // Form Validation
   User.findOne({ email: request.body.email })
@@ -24,7 +23,6 @@ exports.registerUser = (request, response) => {
 
               .then((user) => response.json(user))
               .catch((error) => console.log(error))
-
           })
         })
       }
@@ -32,8 +30,6 @@ exports.registerUser = (request, response) => {
     .catch((err) => console.log(err))
 
   return null
-
-
 }
 
 exports.loginUser = (request, response) => {
@@ -65,10 +61,8 @@ exports.loginUser = (request, response) => {
             if (err) throw new Error('Error al general el token')
             response.json({
               success: true,
-              user_token: token,
-            });
-
-
+              user_token: token
+            })
           }
         )
       } else {
@@ -80,8 +74,6 @@ exports.loginUser = (request, response) => {
   })
 
   return null
-
-
 }
 
 exports.show = async function (req, response) {
