@@ -6,12 +6,12 @@ exports.registrarProducto = (request, response) => {
     
     try {
         Producto.findOne({name : request.body.name}).then(producto => {
-        if(producto){
+        if(!producto){
             return response.status(400).json({name : 'Producto ya existe'});
         }
         const newProduct = new Producto({...request.body});
         newProduct.save().then(RESPONSE => response.send(RESPONSE)).catch(err => console.log(err));
-
+        
     });
         
     } catch (error) {
