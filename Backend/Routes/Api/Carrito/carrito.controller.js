@@ -40,7 +40,7 @@ exports.updateCarrito = async (request, response) =>{
 
 exports.deleteCarrito = async (request, response) =>{ 
     try {
-        return response.send(redis.del(`carrito:${request.params.id}`)
+        return response.send(await redis.del(`carrito:${request.params.id}`)
                         .then(() => console.log('Carrito eliminado'))
                         .catch(err => console.log(err))
                     );     
