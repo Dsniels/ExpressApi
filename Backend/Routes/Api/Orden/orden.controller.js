@@ -1,7 +1,6 @@
 const Orden = require('./orden.model')
 const paginacion = require('../Specificaciones/Paginacion')
 
-
 exports.crearOrden = (request, response) => {
   try {
     const newOrden = new Orden({
@@ -15,7 +14,6 @@ exports.crearOrden = (request, response) => {
   } catch (error) {
     return response.status(500).send('Ocurrio un Error')
   }
-
 }
 
 exports.updateOrden = async (request, response) => {
