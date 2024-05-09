@@ -12,8 +12,10 @@ exports.registrarProducto = (request, response) => {
         .save()
         .then((RESPONSE) => response.send(RESPONSE))
         .catch((err) => console.log(err))
+
     })
     return null
+
   } catch (error) {
     return response.status(500).send('Ocurrió un error al obtener el producto')
   }
