@@ -3,12 +3,13 @@ const Orden = require('./orden.model');
 const paginacion = require('../Specificaciones/Paginacion');
 
 
-exports.crearOrden = (request, response) => {
+exports.crearOrden = (request, response, next) => {
     try {
         const newOrden = new Orden({...request.body, user : request.user._id.toHexString()});
         newOrden.save().then(res => response.send(res)).catch(err => response.send(err));
     } catch (error) {
         return response.status(500).send("Ocurrio un Error");
+        
     }
 
 };
