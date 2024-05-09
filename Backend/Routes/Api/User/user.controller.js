@@ -9,7 +9,7 @@ exports.registerUser = (request, response) => {
   User.findOne({ email: request.body.email })
     .then((user) => {
       if (user) {
-        next();
+        next()
         return response.status(400).json({ email: 'El email ya existe' })
       } else {
         const newUser = new User(request.body)
@@ -29,7 +29,7 @@ exports.registerUser = (request, response) => {
       }
     })
     .catch((err) => console.log(err))
-  next();
+  next()
   return null
 }
 
@@ -39,7 +39,7 @@ exports.loginUser = (request, response) => {
 
   User.findOne({ email }).then((user) => {
     if (!user) {
-      next();
+      next()
       return response
         .status(404)
         .json({ emailnotfound: 'Email no encontrado' })
@@ -68,24 +68,24 @@ exports.loginUser = (request, response) => {
           }
         )
       } else {
-        next();
+        next()
         return response
           .status(400)
           .json({ passwordincorrect: 'Contraseña incorrecta' })
       }
     })
   })
-  next();
+  next()
   return null
 }
 
 exports.show = async function (req, response) {
   const user = await User.findById(req.user._id).exec()
   if (!user) {
-    next();
+    next()
     return response.send(404)
   }
-  next();
+  next()
   return response.json(user)
 }
 
@@ -100,7 +100,7 @@ exports.showUsers = async (request, response) => {
     User.find(queryObj).sort(query.sort),
     request.query
   )
-  next();
+  next()
   if (!users) return response.status(404).json({ message: 'No hay usuarios' })
 
   return response.json(users)
@@ -108,6 +108,6 @@ exports.showUsers = async (request, response) => {
 
 exports.updateUser = async (request, response) => {
   const user = await User.findByIdAndUpdate(request.user._id, request.body)
-  next();
+  next()
   return response.json(user)
 }
