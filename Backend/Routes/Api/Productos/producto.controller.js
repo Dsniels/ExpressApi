@@ -11,7 +11,7 @@ exports.registrarProducto = (request, response) => {
         }
         const newProduct = new Producto({...request.body});
         newProduct.save().then(RESPONSE => response.send(RESPONSE)).catch(err => console.log(err));
-        
+        return null;
     });
         
     } catch (error) {
