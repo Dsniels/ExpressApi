@@ -7,6 +7,7 @@ exports.crearOrden = (request, response) => {
       ...request.body,
       user: request.user._id.toHexString()
     })
+    next();
     return response.send(
       newOrden
         .save()
@@ -14,6 +15,7 @@ exports.crearOrden = (request, response) => {
         .catch((err) => response.send(err))
     )
   } catch (error) {
+    next();
     return response.status(500).send('Ocurrio un Error')
   }
 }
@@ -27,38 +29,46 @@ exports.updateOrden = async (request, response) => {
       request.params.id,
       request.body
     )
+    next();
     if (orden) return response.status(200).send(orden)
     else throw new Error('Orden no encontrada')
   } catch (error) {
+    next();
     return response.status(500).send(error)
   }
 }
 
 exports.mostrarOrdenes = async (request, response) => {
   try {
-    const ordenes = await paginacion(Orden.find({}), request.query)
+    const ordenes = await paginacion(Orden.find({}), request.query);
+    next();
     if (ordenes) return response.status(200).send(ordenes)
     else throw new Error('No hay ordenes que mostrar')
   } catch (error) {
+    next();
     return response.send(error)
   }
 }
 
 exports.mostrarOrdenPorId = async (request, response) => {
   try {
-    const orden = await Orden.findById(request.params.id)
-    if (!orden) throw new Error('No existe la orden')
-    return response.status(200).send(orden)
+    const orden = await Orden.findById(request.params.id);
+    if (!orden) throw new Error('No existe la orden');
+    next();
+    return response.status(200).send(orden);
   } catch (error) {
+    next();
     return response.send(error)
   }
 }
 
 exports.eliminarOrden = async (request, response) => {
   try {
-    const orden = await Orden.findByIdAndDelete(request.params.id)
-    return response.send(orden)
+    const orden = await Orden.findByIdAndDelete(request.params.id);
+    next();
+    return response.send(orden);
   } catch (error) {
+    next();
     return response.send(error)
   }
 }

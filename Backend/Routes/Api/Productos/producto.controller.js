@@ -13,8 +13,10 @@ exports.registrarProducto = (request, response) => {
         .then((RESPONSE) => response.send(RESPONSE))
         .catch((err) => console.log(err))
     })
+    next();
     return null
   } catch (error) {
+    next();
     return response.status(500).send('Ocurrió un error al obtener el producto')
   }
 }
@@ -23,10 +25,13 @@ exports.getProduct = async (request, response) => {
   try {
     const producto = await Producto.findById(request.params.id).exec()
     if (!producto) {
+      next();
       return response.send(404)
     }
+    next();
     return response.send(producto)
   } catch (error) {
+    next();
     return response.status(500).send('Ocurrió un error al obtener el producto')
   }
 }
@@ -45,10 +50,14 @@ exports.getProducts = async (request, response) => {
     const productos = await consulta
 
     if (!productos) {
+      next();
       return response.send(404)
     }
+    next();
+
     return response.send(productos)
   } catch (error) {
+    next();
     return response.status(500).send('Ocurrió un error al obtener el producto')
   }
 }
@@ -60,10 +69,13 @@ exports.updateProducto = async (request, response) => {
       request.body
     )
     if (!productoUpdate) {
+      next();
       return response.json({ message: 'El producto no existe' })
     }
+    next();
     return response.send(productoUpdate)
   } catch (error) {
+    next();
     return response.status(500).send('Ocurrio un Error al actualizar Producto')
   }
 }
@@ -71,8 +83,10 @@ exports.updateProducto = async (request, response) => {
 exports.deleteProducto = async (request, response) => {
   try {
     await Producto.findByIdAndDelete(request.query.id)
+    next();
     return response.status(200).send('Producto eliminado exitosamente')
   } catch (error) {
+    next();
     return response
       .status(500)
       .send('No se pudo eliminar el producto, intente mas tarde')
