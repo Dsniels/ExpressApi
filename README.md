@@ -9,8 +9,8 @@ https://expressapiecommerce.azurewebsites.net/
 **en el archivo .env ingresar la url de mongodby redis**
 
 ```
-MONGO_URL = mongodb+srv://dsnilesalazr:Dasa270512@cluster0.y2dzttg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-REDIS_URL=redis://:UZ2J9W8iGDZoC6lLSayoUPo7nlmtpr2a@redis-11042.c277.us-east-1-3.ec2.redns.redis-cloud.com:11042
+MONGO_URL = mongodb+srv://user:passworscluster0.y2dzttg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+REDIS_URL=redis://:UPo7nlm2a@r7.usec2. redis-cloud.com:port
 ```
 
 **en el archivo keys secretOrKey para token y array con los roles, de este modo:**
