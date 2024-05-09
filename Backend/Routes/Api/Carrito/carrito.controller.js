@@ -30,7 +30,6 @@ exports.updateCarrito = async (request, response) => {
   }
 }
 
-
 exports.deleteCarrito = async (request, response) => {
   try {
     return response.send(
@@ -43,4 +42,3 @@ exports.deleteCarrito = async (request, response) => {
     return response.send(error).status(400)
   }
 }
-
