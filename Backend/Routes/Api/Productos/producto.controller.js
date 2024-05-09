@@ -2,9 +2,11 @@ const Producto = require('./producto.model')
 const paginacion = require('../Specificaciones/Paginacion')
 
 exports.registrarProducto = (request, response) => {
+
+
   try {
     Producto.findOne({ name: request.body.name }).then((producto) => {
-      if (producto) {
+      if (!producto) {
         return response.status(400).json({ name: 'Producto ya existe' })
       }
       const newProduct = new Producto({ ...request.body })
@@ -13,6 +15,8 @@ exports.registrarProducto = (request, response) => {
         .then((RESPONSE) => response.send(RESPONSE))
         .catch((err) => console.log(err))
     })
+    return null
+
   } catch (error) {
     return response.status(500).send('Ocurrió un error al obtener el producto')
   }
@@ -76,4 +80,5 @@ exports.deleteProducto = async (request, response) => {
       .status(500)
       .send('No se pudo eliminar el producto, intente mas tarde')
   }
+
 }
