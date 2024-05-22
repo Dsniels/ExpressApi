@@ -1,7 +1,5 @@
-
 module.exports = {
-   
-    secretOrKey : 'secret',
-    userRoles: ['user', 'manager']
-};
 
+  secretOrKey: 'secret',
+  userRoles: ['user', 'manager']
+}

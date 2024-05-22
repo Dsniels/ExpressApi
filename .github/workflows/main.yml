@@ -1,0 +1,16 @@
+name: Funcinalidades o Bugs
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    name: Añadir a Proyecto
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v0.4.1
+        with:
+          project-url: https://github.com/users/Dsniels/projects/5/views/2
+          github-token: ${{ secrets.PROJECT_SECRET }}
