@@ -44,6 +44,7 @@ module.exports = {
 
     - sort
     - page
+    - pageSize
 
   - "/api/productos/:id" : Obtener producto por id
   - "/api/productos/agregar" : Agregar un producto, insertar la data requerida segun producto.model.js
