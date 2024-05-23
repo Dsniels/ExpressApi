@@ -57,7 +57,7 @@ mongoose
 app.use('/api/users', users)
 app.use('/api/productos', producto)
 app.use('/api/ordenes', ordenes)
-app.use('/api/carrito', carrito)
+//app.use('/api/carrito', carrito)
 app.use('/request-type', (req, res, next) => {
   console.log('request type:', req.method)
   next()
