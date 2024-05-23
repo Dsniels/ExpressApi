@@ -34,6 +34,13 @@ module.exports = {
     Obtener todos los usuarios requiere role "manager"
   - "api/users/login":
     Iniciar sesion
+
+    body{
+      "email" : " ",
+      "password" : " ",
+      "name" : " ",
+      "lastname" : " " 
+    }
   - "/api/users/registrarse":
     Crear cuenta
     enviar Json con datos segun user.model.js
@@ -44,6 +51,7 @@ module.exports = {
 
     - sort
     - page
+    - pageSize
 
   - "/api/productos/:id" : Obtener producto por id
   - "/api/productos/agregar" : Agregar un producto, insertar la data requerida segun producto.model.js
