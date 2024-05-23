@@ -36,11 +36,12 @@ module.exports = {
     Iniciar sesion
 
     body{
-      "email" : " ",
-      "password" : " ",
-      "name" : " ",
-      "lastname" : " " 
+    "email" : " ",
+    "password" : " ",
+    "name" : " ",
+    "lastname" : " "
     }
+
   - "/api/users/registrarse":
     Crear cuenta
     enviar Json con datos segun user.model.js
