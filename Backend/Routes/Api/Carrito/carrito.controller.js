@@ -2,7 +2,7 @@ const redis = require('../../../config/redis')
 
 exports.obtenerCarritoId = async (request, response) => {
   try {
-    const carrito = await redis.get(`carrito:${request.params.id}`)
+    const carrito = await redis.get(`${request.params.id}`)
 
     if (carrito) {
       return response.status(200).send(JSON.parse(carrito))
@@ -23,8 +23,7 @@ exports.updateCarrito = async (request, response) => {
     //const carritos = redis.SET();
     //const carritos = redis.set()
     const carrito = await redis.setEx(
-      `${JSON.stringify(request.user._id.toHexString())}`, 3000 ,items
-    )
+      `${request.user._id.toHexString()}`, 3000 ,items)
     console.log('carritostring');
     console.log(carrito);
     if (!carrito) throw new Error('Error al actualizar el carrito')
@@ -41,7 +40,7 @@ exports.deleteCarrito = async (request, response) => {
   try {
     return response.send(
       await redis
-        .del(`carrito:${request.params.id}`)
+        .del(`${request.params.id}`)
         .then(() => console.log('Carrito eliminado'))
         .catch((err) => console.log(err))
     )
