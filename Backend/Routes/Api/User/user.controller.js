@@ -119,7 +119,7 @@ exports.AuthGoogle = () => {
     passport.authenticate(
         'google', 
         {
-            successRedirect: process.env.CLIENTE_URL,
+            //successRedirect: process.env.CLIENTE_URL,
             successMessage : 'Success',
             failureRedirect : '/login/failed'
         }
