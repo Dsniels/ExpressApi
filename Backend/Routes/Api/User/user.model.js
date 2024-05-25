@@ -16,7 +16,6 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
   },
   role: {
     type: String,
@@ -31,6 +30,9 @@ const UserSchema = new Schema({
     type: String,
     default: '',
     required: false
+  },
+  googleId : {
+    type : String
   }
 })
 
