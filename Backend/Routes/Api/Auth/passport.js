@@ -1,12 +1,13 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const User = require('../User/user.model');
+require('dotenv').config();
 
 passport.use( 
     new GoogleStrategy({
-        clientID : process.env.CLIENTE_ID,
+        clientID : process.env.CLIENT_ID,
         clientSecret : process.env.CLIENTE_SECRETE,
-        callbackURL : '/api/users/google/callback',
+        callbackURL : 'http://localhost:3000/api/users/google/callback',
         scope : ['profile', 'email']
     },
     (access_token, refresh_token, profile, done) => {
@@ -14,8 +15,6 @@ passport.use(
             .then(user => {
               user ? done(null, user) : new User({
                 googleId : profile.id, 
-                name : profile.name, 
-                email : profile.email
               })
                 .save()
                 .then(user=>done(null, user));
