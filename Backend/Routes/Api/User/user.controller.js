@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
+const passport = require('passport')
 
 exports.registerUser = (request, response) => {
   // Form Validation
@@ -12,7 +13,6 @@ exports.registerUser = (request, response) => {
         return response.status(400).json({ email: 'El email ya existe' })
       } else {
         const newUser = new User(request.body)
-
         // Hash password
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -76,8 +76,8 @@ exports.loginUser = (request, response) => {
   return null
 }
 
-exports.show = async function (req, response) {
-  const user = await User.findById(req.user._id).exec()
+exports.show = async function (request, response) {
+  const user = await User.findById(request.user._id).exec()
   if (!user) {
     return response.send(404)
   }
@@ -105,4 +105,23 @@ exports.updateUser = async (request, response) => {
   const user = await User.findByIdAndUpdate(request.user._id, request.body)
 
   return response.json(user)
+}
+
+exports.loginFailed = (request, response) => {
+  response.status(401).json({
+    error: true,
+    message : 'Login Failure'
+  })
+}
+
+
+exports.AuthGoogle = () => {
+    passport.authenticate(
+        'google', 
+        {
+            successRedirect: process.env.CLIENTE_URL,
+            successMessage : 'Success',
+            failureRedirect : '/login/failed'
+        }
+)
 }
