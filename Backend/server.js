@@ -11,6 +11,7 @@ const carrito = require('./Routes/Api/Carrito');
 const cors = require('cors');
 require('dotenv').config();
 require('./config/redis');
+const session = require('express-session');
 
 
 // middleware
@@ -19,10 +20,17 @@ app.use(
     extended: false
   })
 )
+app.use(session({
+  secret : 'DASA',
+  resave : false,
+  saveUninitialized: true,
+}));
+
 app.use(cors())
 app.use(bodyParser.json())
 app.use(passport.initialize())
-app.user(passport.session())
+app.use(passport.session())
+
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
