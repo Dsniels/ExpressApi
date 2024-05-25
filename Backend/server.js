@@ -1,17 +1,16 @@
-const bodyParser = require('body-parser');
-const express = require('express');
-const users = require('./Routes/Api/User');
-const passport = require('passport');
-const app = express();
-const passportSetUp = require('./Routes/Api/Auth/passport');
-const mongoose = require('mongoose');
-const producto = require('./Routes/Api/Productos');
-const ordenes = require('./Routes/Api/Orden');
-const carrito = require('./Routes/Api/Carrito');
-const cors = require('cors');
-require('dotenv').config();
-require('./config/redis');
-
+const bodyParser = require('body-parser')
+const express = require('express')
+const users = require('./Routes/Api/User')
+const passport = require('passport')
+const app = express()
+const passportSetUp = require('./Routes/Api/Auth/passport')
+const mongoose = require('mongoose')
+const producto = require('./Routes/Api/Productos')
+const ordenes = require('./Routes/Api/Orden')
+const carrito = require('./Routes/Api/Carrito')
+const cors = require('cors')
+require('dotenv').config()
+require('./config/redis')
 
 // middleware
 app.use(
