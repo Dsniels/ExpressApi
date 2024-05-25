@@ -8,14 +8,14 @@ const UserSchema = new Schema({
   },
   lastname: {
     type: String,
-    required: false 
+    required: false
   },
   email: {
     type: String,
     required: true
   },
   password: {
-    type: String,
+    type: String
   },
   role: {
     type: String,
@@ -31,8 +31,8 @@ const UserSchema = new Schema({
     default: '',
     required: false
   },
-  googleId : {
-    type : String
+  googleId: {
+    type: String
   }
 })
 
