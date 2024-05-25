@@ -110,18 +110,14 @@ exports.updateUser = async (request, response) => {
 exports.loginFailed = (request, response) => {
   response.status(401).json({
     error: true,
-    message : 'Login Failure'
+    message: 'Login Failure'
   })
 }
 
-
 exports.AuthGoogle = () => {
-    passport.authenticate(
-        'google', 
-        {
-            //successRedirect: process.env.CLIENTE_URL,
-            successMessage : 'Success',
-            failureRedirect : '/login/failed'
-        }
-)
+  passport.authenticate('google', {
+    // successRedirect: process.env.CLIENTE_URL,
+    successMessage: 'Success',
+    failureRedirect: '/login/failed'
+  })
 }
