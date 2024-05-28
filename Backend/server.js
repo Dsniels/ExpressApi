@@ -3,7 +3,7 @@ const express = require('express');
 const users = require('./Routes/Api/User');
 const passport = require('passport');
 const app = express();
-const passportSetUp = require('./Routes/Api/Auth/passport');
+require('./Routes/Api/Auth/passport');
 const mongoose = require('mongoose');
 const producto = require('./Routes/Api/Productos');
 const ordenes = require('./Routes/Api/Orden');
