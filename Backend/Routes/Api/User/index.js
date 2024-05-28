@@ -17,7 +17,13 @@ router.get('/login/failed', controller.loginFailed);
 
 router.put('/actualizar', auth.hasRole('user'), controller.updateUser);
 
-router.get('/google/callback', controller.AuthGoogle);
+router.get('/google/callback',passport.authenticate('google',{successRedirect: 'http://localhost:3000/api/productos',
+            failureRedirect : '/login/failed'
+        }), (req, res) => {
+          console.log('authenticado')
+          res.send('http://localhost:3000/api/productos');
+        }
+);
 
 router.get('/google', passport.authenticate('google', ['profile', 'email']));
 
