@@ -7,28 +7,38 @@ passport.use(
     new GoogleStrategy({
         clientID : process.env.CLIENT_ID,
         clientSecret : process.env.CLIENTE_SECRETE,
-        callbackURL : 'http://localhost:3000/api/users/google/callback',
-        scope : ['profile', 'email']
+        callbackURL : '/api/users/google/callback',
+        scope : ['profile', 'email'],
+        passReqToCallback : true
     },
-    (access_token, refresh_token, profile, done) => {
-        User.findOne({googleId : profile.id})
-            .then(user => {
-              user ? done(null, user) : new User({
-                googleId : profile.id, 
-              })
-                .save()
-                .then(user=>done(null, user));
-            })
-    })    
-  );
+    async (request, accessToken, refreshToken, profile, done) => {
+         console.log('Access Token:', accessToken);
+        console.log('Profile:', profile);
+      try {
+        // Aquí puedes verificar o crear el usuario en tu base de datos
+        let user = await User.findOne({ googleId: profile.id });
+        if (!user) {
+          user = new User({ googleId: profile.id, displayName: profile.displayName, email: profile.email });
+          await user.save();
+        }
+        return done(null, user);
+      } catch (error) {
+        return done(error, null);
+      }})    
+);
 
 
-  passport.serializeUser((user, done) => {
+passport.serializeUser((user, done) => {
     done(null,user.id);
   });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id).then(user => done(null, user));
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
 });
 
 
