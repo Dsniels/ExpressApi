@@ -111,21 +111,20 @@ exports.updateUser = async (request, response) => {
 exports.loginFailed = (request, response) => {
   response.status(401).json({
     error: true,
-    message : 'Login Failure'
+    message: 'Login Failure'
   })
 }
 
-
 exports.AuthGoogle = () => {
-    passport.authenticate(
-        'google', 
-        {
-            successRedirect: 'http://localhost:3000/api/productos',
-            failureRedirect : '/login/failed'
-        }, (req, res) => {
-          console.log('authenticado')
-          res.send('http://localhost:3000/api/productos');
-        }
-)
-
+  passport.authenticate(
+    'google',
+    {
+      successRedirect: 'http://localhost:3000/api/productos',
+      failureRedirect: '/login/failed'
+    },
+    (req, res) => {
+      console.log('authenticado')
+      res.send('http://localhost:3000/api/productos')
+    }
+  )
 }

@@ -1,18 +1,17 @@
-const bodyParser = require('body-parser');
-const express = require('express');
-const users = require('./Routes/Api/User');
-const passport = require('passport');
-const app = express();
-require('./Routes/Api/Auth/passport');
-const mongoose = require('mongoose');
-const producto = require('./Routes/Api/Productos');
-const ordenes = require('./Routes/Api/Orden');
-const carrito = require('./Routes/Api/Carrito');
-const cors = require('cors');
-require('dotenv').config();
-require('./config/redis');
-const session = require('express-session');
-
+const bodyParser = require('body-parser')
+const express = require('express')
+const users = require('./Routes/Api/User')
+const passport = require('passport')
+const app = express()
+require('./Routes/Api/Auth/passport')
+const mongoose = require('mongoose')
+const producto = require('./Routes/Api/Productos')
+const ordenes = require('./Routes/Api/Orden')
+const carrito = require('./Routes/Api/Carrito')
+const cors = require('cors')
+require('dotenv').config()
+require('./config/redis')
+const session = require('express-session')
 
 // middleware
 app.use(
@@ -20,17 +19,18 @@ app.use(
     extended: false
   })
 )
-app.use(session({
-  secret : 'DASA',
-  resave : false,
-  saveUninitialized: true,
-}));
+app.use(
+  session({
+    secret: 'DASA',
+    resave: false,
+    saveUninitialized: true
+  })
+)
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
-
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
