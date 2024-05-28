@@ -4,6 +4,7 @@ const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
 const passport = require('passport')
+const { response } = require('express')
 
 exports.registerUser = (request, response) => {
   // Form Validation
@@ -119,9 +120,12 @@ exports.AuthGoogle = () => {
     passport.authenticate(
         'google', 
         {
-            //successRedirect: process.env.CLIENTE_URL,
-            successMessage : 'Success',
+            successRedirect: 'http://localhost:3000/api/productos',
             failureRedirect : '/login/failed'
+        }, (req, res) => {
+          console.log('authenticado')
+          res.send('http://localhost:3000/api/productos');
         }
 )
+
 }
