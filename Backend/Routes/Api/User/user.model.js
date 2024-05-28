@@ -3,17 +3,16 @@ const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
   name: {
-    type: String,
-
+    type: String
   },
   lastname: {
-    type: String,
+    type: String
   },
   email: {
-    type: String,
+    type: String
   },
   password: {
-    type: String,
+    type: String
   },
   role: {
     type: String,
@@ -29,11 +28,11 @@ const UserSchema = new Schema({
     default: '',
     required: false
   },
-  googleId : {
-    type : String
+  googleId: {
+    type: String
   },
-  token : {
-    type : String
+  token: {
+    type: String
   }
 })
 
