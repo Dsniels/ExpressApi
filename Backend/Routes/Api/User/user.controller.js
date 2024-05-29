@@ -5,9 +5,10 @@ const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
 const passport = require('passport')
 const { response } = require('express')
+const { signToken } = require('../Auth/auth.service')
 
 exports.registerUser = (request, response) => {
-  // Form Validation
+
   User.findOne({ email: request.body.email })
     .then((user) => {
       if (user) {
@@ -19,13 +20,14 @@ exports.registerUser = (request, response) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) throw err
             newUser.password = hash
-            newUser
-              .save()
-
-              .then((user) => response.json(user))
-              .catch((error) => console.log(error))
           })
         })
+
+        
+        const payload = { role: newUser.role, id : newUser.id }
+        newUser.token = signToken(payload)
+              .then((user) => response.json(user))
+              .catch((error) => console.log(error))
       }
     })
     .catch((err) => console.log(err))
@@ -49,7 +51,8 @@ exports.loginUser = (request, response) => {
         // Crear JWT
         const payload = {
           id: user.id,
-          name: user.name
+          name: user.name,
+          role : user.role
         }
 
         jwt.sign(
@@ -60,10 +63,9 @@ exports.loginUser = (request, response) => {
           },
           (err, token) => {
             if (err) throw new Error('Error al general el token')
-            response.json({
-              success: true,
-              user_token: token
-            })
+              user.token = token;
+              user.save()
+              response.json(user);
           }
         )
       } else {
@@ -78,7 +80,7 @@ exports.loginUser = (request, response) => {
 }
 
 exports.show = async function (request, response) {
-  const user = await User.findById(request.user._id).exec()
+  const user = await User.findById(request.params.id).exec()
   if (!user) {
     return response.send(404)
   }
@@ -116,16 +118,10 @@ exports.loginFailed = (request, response) => {
 }
 
 
-exports.AuthGoogle = () => {
-    passport.authenticate(
-        'google', 
-        {
-            successRedirect: 'http://localhost:3000/api/productos',
-            failureRedirect : '/login/failed'
-        }, (req, res) => {
-          console.log('authenticado')
-          res.send('http://localhost:3000/api/productos');
-        }
-)
+exports.AuthGoogle = (request, response) => {
+
+  console.log('auth');
+  response.send('authenticado con google');
+    
 
 }
