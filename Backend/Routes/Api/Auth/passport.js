@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const User = require('../User/user.model');
+const { signToken } = require('./auth.service');
 require('dotenv').config();
 
 passport.use( 
@@ -27,6 +28,11 @@ passport.use(
             lastname : profile.family_name ,
             email: profile.email 
           });
+          const payload = {
+            id : user.googleId,
+            role : user.role
+          }
+          user.token = signToken(payload)
           await user.save();
         }
         console.log(user);
