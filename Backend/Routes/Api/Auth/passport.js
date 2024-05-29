@@ -16,11 +16,20 @@ passport.use(
         console.log('Profile:', profile);
       try {
         // Aquí puedes verificar o crear el usuario en tu base de datos
-        let user = await User.findOne({ googleId: profile.id });
+        let user = await User.findOne({ 
+          googleId: profile.id 
+        });
+        
         if (!user) {
-          user = new User({ googleId: profile.id, displayName: profile.displayName, email: profile.email });
+          user = new User({ 
+            googleId: profile.id, 
+            name: profile.given_name, 
+            lastname : profile.family_name ,
+            email: profile.email 
+          });
           await user.save();
         }
+        console.log(user);
         return done(null, user);
       } catch (error) {
         return done(error, null);
