@@ -95,7 +95,7 @@ exports.showUsers = async (request, response) => {
 }
 
 exports.updateUser = async (request, response) => {
-  const user = await User.findByIdAndUpdate(request.user._id, request.body)
+  const user = await User.findByIdAndUpdate(request.params.id, request.body)
 
   return response.json(user)
 }
