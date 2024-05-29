@@ -14,11 +14,11 @@ router.get('/done', controller.done);
 
 router.get('/google', passport.authenticate('google', ['profile', 'email']));
 
-router.get('/:id', auth.hasRole('user'), controller.show);
-
 router.get('/all', auth.hasRole('manager'), controller.showUsers);
 
-router.put('/actualizar:id', auth.hasRole('user'), controller.updateUser);
+router.get('/:id', auth.hasRole('manager'), controller.show);
+
+router.put('/actualizar/:id', auth.hasRole('user'), controller.updateUser);
 
 router.get('/google/callback',
             passport.authenticate('google',{
