@@ -6,7 +6,6 @@ const paginacion = require('../Specificaciones/Paginacion')
 const { signToken } = require('../Auth/auth.service')
 
 exports.registerUser = (request, response) => {
-
   User.findOne({ email: request.body.email })
     .then((user) => {
       if (user) {
@@ -16,21 +15,20 @@ exports.registerUser = (request, response) => {
         // Hash password
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) console.log(err);
-            console.log(hash);
-            newUser.password = hash;
-            const payload = { role: newUser.role, id : newUser.id }
-            newUser.token = signToken(payload);
-            newUser.save()
-                  .then((user) => response.json(user))
-                  .catch((error) => console.log(error))
-            
+            if (err) console.log(err)
+            console.log(hash)
+            newUser.password = hash
+            const payload = { role: newUser.role, id: newUser.id }
+            newUser.token = signToken(payload)
+            newUser
+              .save()
+              .then((user) => response.json(user))
+              .catch((error) => console.log(error))
           })
         })
       }
     })
     .catch((err) => console.log(err))
-
 }
 
 exports.loginUser = (request, response) => {
@@ -49,15 +47,14 @@ exports.loginUser = (request, response) => {
         // Crear JWT
         const payload = {
           id: user.id,
-          role : user.role
+          role: user.role
         }
-        
-        const token = signToken(payload);
-        user.token = token;
-        user.save();
 
-        response.json(user);
-       
+        const token = signToken(payload)
+        user.token = token
+        user.save()
+
+        response.json(user)
       } else {
         return response
           .status(400)
@@ -99,15 +96,11 @@ exports.updateUser = async (request, response) => {
 
   return response.json(user)
 }
-exports.done = async(request, response) => {
-  response.json(request.user);
+exports.done = async (request, response) => {
+  response.json(request.user)
 }
 
-
-
 exports.AuthGoogle = (request, response) => {
-  console.log(request);
-  response.send('authenticado con google');
-    
-
+  console.log(request)
+  response.send('authenticado con google')
 }
