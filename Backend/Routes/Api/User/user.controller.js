@@ -8,7 +8,6 @@ const { response } = require('express')
 const { signToken } = require('../Auth/auth.service')
 
 exports.registerUser = (request, response) => {
-
   User.findOne({ email: request.body.email })
     .then((user) => {
       if (user) {
@@ -23,11 +22,10 @@ exports.registerUser = (request, response) => {
           })
         })
 
-        
-        const payload = { role: newUser.role, id : newUser.id }
+        const payload = { role: newUser.role, id: newUser.id }
         newUser.token = signToken(payload)
-              .then((user) => response.json(user))
-              .catch((error) => console.log(error))
+          .then((user) => response.json(user))
+          .catch((error) => console.log(error))
       }
     })
     .catch((err) => console.log(err))
@@ -52,7 +50,7 @@ exports.loginUser = (request, response) => {
         const payload = {
           id: user.id,
           name: user.name,
-          role : user.role
+          role: user.role
         }
 
         jwt.sign(
@@ -63,9 +61,9 @@ exports.loginUser = (request, response) => {
           },
           (err, token) => {
             if (err) throw new Error('Error al general el token')
-              user.token = token;
-              user.save()
-              response.json(user);
+            user.token = token
+            user.save()
+            response.json(user)
           }
         )
       } else {
@@ -113,15 +111,11 @@ exports.updateUser = async (request, response) => {
 exports.loginFailed = (request, response) => {
   response.status(401).json({
     error: true,
-    message : 'Login Failure'
+    message: 'Login Failure'
   })
 }
 
-
 exports.AuthGoogle = (request, response) => {
-
-  console.log('auth');
-  response.send('authenticado con google');
-    
-
+  console.log('auth')
+  response.send('authenticado con google')
 }

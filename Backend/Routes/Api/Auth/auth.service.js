@@ -8,7 +8,6 @@ const validateJwt = expressJwt({
   algorithms: ['HS256']
 })
 
-
 function isAuthenticated () {
   return compose()
     .use((request, response, next) => {
@@ -48,7 +47,7 @@ function hasRole (roleRequired) {
 }
 
 function signToken (payload) {
-  return jwt.sign(payload, config.secretOrKey,{ expiresIn : 312321 });
+  return jwt.sign(payload, config.secretOrKey, { expiresIn: 312321 })
 }
 
 function setTokenCookie (request, response) {
