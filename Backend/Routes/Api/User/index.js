@@ -5,25 +5,26 @@ const passport = require('passport');
 const router = express.Router();
 
 
-router.get('/:id', auth.hasRole('user'), controller.show);
-
-router.get('/all', auth.hasRole('manager'), controller.showUsers);
 
 router.post('/registrarse', controller.registerUser);
 
 router.post('/login', controller.loginUser);
 
-router.get('/login/failed', controller.loginFailed);
+router.get('/done', controller.done);
+
+router.get('/google', passport.authenticate('google', ['profile', 'email']));
+
+router.get('/:id', auth.hasRole('user'), controller.show);
+
+router.get('/all', auth.hasRole('manager'), controller.showUsers);
 
 router.put('/actualizar:id', auth.hasRole('user'), controller.updateUser);
 
 router.get('/google/callback',
             passport.authenticate('google',{
-              successRedirect: 'http://localhost:3000/api/productos',
+              successRedirect: 'http://localhost:3000/api/users/done',
               failureRedirect : '/login'
-        })
-        ,controller.AuthGoogle);
+        }),controller.AuthGoogle);
 
-router.get('/google', passport.authenticate('google', ['profile', 'email']));
 
 module.exports = router

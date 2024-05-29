@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken')
 const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
-const passport = require('passport')
-const { response } = require('express')
 const { signToken } = require('../Auth/auth.service')
 
 exports.registerUser = (request, response) => {
@@ -18,21 +16,21 @@ exports.registerUser = (request, response) => {
         // Hash password
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err
-            newUser.password = hash
+            if (err) console.log(err);
+            console.log(hash);
+            newUser.password = hash;
+            const payload = { role: newUser.role, id : newUser.id }
+            newUser.token = signToken(payload);
+            newUser.save()
+                  .then((user) => response.json(user))
+                  .catch((error) => console.log(error))
+            
           })
         })
-
-        
-        const payload = { role: newUser.role, id : newUser.id }
-        newUser.token = signToken(payload)
-              .then((user) => response.json(user))
-              .catch((error) => console.log(error))
       }
     })
     .catch((err) => console.log(err))
 
-  return null
 }
 
 exports.loginUser = (request, response) => {
@@ -51,23 +49,15 @@ exports.loginUser = (request, response) => {
         // Crear JWT
         const payload = {
           id: user.id,
-          name: user.name,
           role : user.role
         }
+        
+        const token = signToken(payload);
+        user.token = token;
+        user.save();
 
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          {
-            expiresIn: 3123212
-          },
-          (err, token) => {
-            if (err) throw new Error('Error al general el token')
-              user.token = token;
-              user.save()
-              response.json(user);
-          }
-        )
+        response.json(user);
+       
       } else {
         return response
           .status(400)
@@ -109,18 +99,14 @@ exports.updateUser = async (request, response) => {
 
   return response.json(user)
 }
-
-exports.loginFailed = (request, response) => {
-  response.status(401).json({
-    error: true,
-    message : 'Login Failure'
-  })
+exports.done = async(request, response) => {
+  response.json(request.user);
 }
 
 
-exports.AuthGoogle = (request, response) => {
 
-  console.log('auth');
+exports.AuthGoogle = (request, response) => {
+  console.log(request);
   response.send('authenticado con google');
     
 
