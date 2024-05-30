@@ -94,16 +94,32 @@ exports.showUsers = async (request, response) => {
   return response.json(users)
 }
 
-exports.updateUser = async (request, response) => {
-  if(request.user.role === 'user'){
-    const user = await User.findByIdAndUpdate(request.params.id, request.body)
-  } 
 
-  return response.json(user)
+
+
+exports.updateUser = async (request, response) => {
+
+
+  if(request.user.role === 'user'){
+    var userid = request.user._id.toHexString();
+  }else{
+    var userid = request.params.id;
+  }
+
+  return new Promise((resolve, reject) => {
+      User.findByIdAndUpdate(userid, request.body, {returnDocument:'after'})
+          .then(docs => resolve(response.json(docs)))
+          .catch(err => resolve(response.status(403).json(err)))
+  })
+
 }
+
+
 exports.done = async(request, response) => {
   response.json(request.user);
 }
+
+
 
 
 
