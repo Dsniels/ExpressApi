@@ -33,7 +33,6 @@ function isAuthenticated () {
     })
     .use(async (request, response, next) => {
 
-
       const user = await User.findById(request.auth.id)
       if (!user) return response.sendStatus(401)
 
