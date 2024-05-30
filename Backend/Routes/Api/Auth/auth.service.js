@@ -7,12 +7,23 @@ const validateJwt = expressJwt({
   secret: config.secretOrKey,
   algorithms: ['HS256']
 })
+const { UnauthorizedError } = require('express-jwt');
 
 
 function isAuthenticated () {
   return compose()
     .use((request, response, next) => {
-      validateJwt(request, response, next)
+        validateJwt(request, response, (err) => {
+            if (err) {
+              if (err instanceof UnauthorizedError) {            
+                return response.status(401).json({ error: 'No se encontró el token de autorización' });
+              } else {
+                return response.status(500).json({ error: 'Error en la validación del token', details: err });
+              }
+            }
+            next();
+          });
+
       if (
         request.query &&
         Object.prototype.hasOwnProperty.call(request.query, 'access_token')
@@ -21,6 +32,8 @@ function isAuthenticated () {
       }
     })
     .use(async (request, response, next) => {
+
+
       const user = await User.findById(request.auth.id)
       if (!user) return response.sendStatus(401)
 
