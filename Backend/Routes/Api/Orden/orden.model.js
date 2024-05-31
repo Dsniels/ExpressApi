@@ -6,10 +6,6 @@ const ordenItem = new Schema({
     type: String,
     required: true
   },
-  categoria: {
-    type: String,
-    required: true
-  },
   precio: {
     type: Number,
     required: true
@@ -34,30 +30,15 @@ const OrdenSchema = new Schema({
     required: true,
     default: 'No pagado'
   },
-  Estado: {
-    type: String,
-    required: true
-  },
-  Ciudad: {
-    type: String,
-    required: true
-  },
-  CodigoPostal: {
-    type: Number,
-    required: true
-  },
-  Colonia: {
-    type: String,
-    required: true
-  },
-  Calle: {
-    type: String,
-    required: true
-  },
+  
   items: [ordenItem],
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  direccion :{
+    type: Schema.ObjectId,
+    ref : 'Direccion'
   }
 })
 module.exports = Orden = mongoose.model('Orden', OrdenSchema)
