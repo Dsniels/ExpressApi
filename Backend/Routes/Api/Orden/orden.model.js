@@ -1,44 +1,44 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const ordenItem = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   precio: {
     type: Number,
-    required: true
+    required: true,
   },
   marca: {
     type: String,
-    required: true
+    required: true,
   },
   cantidad: {
     type: Number,
-    require: true
-  }
-})
+    require: true,
+  },
+});
 
 const OrdenSchema = new Schema({
   Total: {
     type: Number,
-    required: true
+    required: true,
   },
   statusPago: {
     type: String,
     required: true,
-    default: 'No pagado'
+    default: "No pagado",
   },
-  
+
   items: [ordenItem],
   user: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: "User",
   },
-  direccion :{
+  direccion: {
     type: Schema.ObjectId,
-    ref : 'Direccion'
-  }
-})
-module.exports = Orden = mongoose.model('Orden', OrdenSchema)
+    ref: "Direccion",
+  },
+});
+module.exports = Orden = mongoose.model("Orden", OrdenSchema);
