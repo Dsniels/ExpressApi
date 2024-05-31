@@ -6,17 +6,19 @@ const ordenItem = new Schema({
     type: String,
     required: true
   },
-  precio: {
+  price: {
     type: Number,
     required: true
   },
   marca: {
     type: String,
-    required: true
   },
-  cantidad: {
-    type: Number,
+  quantity: {
+    type: String,
     require: true
+  },
+  unit_amount:{
+    type:Object
   }
 })
 
@@ -25,12 +27,9 @@ const OrdenSchema = new Schema({
     type: Number,
     required: true
   },
-  statusPago: {
-    type: String,
-    required: true,
-    default: 'No pagado'
+  id : {
+    type : String
   },
-  
   items: [ordenItem],
   user: {
     type: Schema.ObjectId,

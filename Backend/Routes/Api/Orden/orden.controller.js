@@ -1,10 +1,20 @@
 const Orden = require('./orden.model')
-const paginacion = require('../Specificaciones/Paginacion')
+const paginacion = require('../Specificaciones/Paginacion');
+const paypal = require('../PayPal/paypal.service');
 
-exports.crearOrden = (request, response) => {
+exports.crearOrden = async (request, response) => {
+  const cart = {
+    ...request.body,
+    direccion : request.user.Direccion.toHexString()
+  }
+
+  
+  const {ResponseJson} = await paypal.createOrden(cart);
+
   try {
     const newOrden = new Orden({
       ...request.body,
+      id : ResponseJson.id,
       user: request.user._id.toHexString(),
       direccion : request.user.Direccion.toHexString()
     })
@@ -40,6 +50,17 @@ exports.mostrarOrdenes = async (request, response) => {
     else throw new Error('No hay ordenes que mostrar')
   } catch (error) {
     return response.send(error)
+  }
+}
+
+exports.captureOrden =async (req, res) => {
+  try {
+    const { orderID } = req.params;
+    const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
+    res.status(httpStatusCode).json(jsonResponse);
+  } catch (error) {
+    console.error("Failed to create order:", error);
+    res.status(500).json({ error: "Failed to capture order." });
   }
 }
 
