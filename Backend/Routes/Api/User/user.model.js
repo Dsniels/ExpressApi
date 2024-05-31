@@ -1,10 +1,11 @@
 const mongoose = require('mongoose')
+const direccion = require('../Direccion/direccion.model')
 const Schema = mongoose.Schema
+
 
 const UserSchema = new Schema({
   name: {
     type: String,
-
   },
   lastname: {
     type: String,
@@ -34,6 +35,10 @@ const UserSchema = new Schema({
   },
   token : {
     type : String
+  },
+  Direccion : {
+    type : Schema.Types.ObjectId,
+    ref : 'Direccion'    
   }
 })
 
