@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const producto = require('./Routes/Api/Productos');
 const ordenes = require('./Routes/Api/Orden');
 const carrito = require('./Routes/Api/Carrito');
+const direccion = require('./Routes/Api/Direccion');
 const cors = require('cors');
 require('dotenv').config();
 require('./config/redis');
@@ -65,7 +66,7 @@ mongoose
 app.use('/api/users', users)
 app.use('/api/productos', producto)
 app.use('/api/ordenes', ordenes)
-//
+app.use('/api/direccion', direccion)
 app.use('/api/carrito', carrito)
 app.use('/request-type', (req, res, next) => {
   console.log('request type:', req.method)

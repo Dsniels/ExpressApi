@@ -20,11 +20,7 @@ router.get('/:id', auth.hasRole('manager'), controller.show);
 
 router.put('/actualizar/:id', auth.hasRole('user'), controller.updateUser);
 
-router.get('/google/callback',
-            passport.authenticate('google',{
-              successRedirect: 'http://localhost:3000/api/users/done',
-              failureRedirect : '/login'
-        }),controller.AuthGoogle);
+router.get('/google/callback',passport.authenticate('google',{successRedirect: 'http://localhost:3000/api/users/done',failureRedirect : '/login'}),controller.AuthGoogle);
 
 
 module.exports = router

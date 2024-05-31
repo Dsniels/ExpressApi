@@ -5,14 +5,13 @@ exports.crearOrden = (request, response) => {
   try {
     const newOrden = new Orden({
       ...request.body,
-      user: request.user._id.toHexString()
+      user: request.user._id.toHexString(),
+      direccion : request.user.Direccion.toHexString()
     })
-    return response.send(
-      newOrden
-        .save()
-        .then((res) => response.send(res))
-        .catch((err) => response.send(err))
-    )
+    newOrden
+      .save()
+      .then((res) => response.send(res))
+      .catch((err) => response.status(500).send(err))
   } catch (error) {
     return response.status(500).send('Ocurrio un Error')
   }
