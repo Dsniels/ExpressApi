@@ -12,7 +12,7 @@ router.post('/login', controller.loginUser);
 
 router.get('/done', controller.done);
 
-router.get('/google', passport.authenticate('google', ['profile', 'email']));
+router.get('/google', passport.authenticate('google',{session : false,scope : ['profile', 'email']} ));
 
 router.get('/all', auth.hasRole('manager'), controller.showUsers);
 
@@ -20,7 +20,7 @@ router.get('/:id', auth.hasRole('manager'), controller.show);
 
 router.put('/actualizar/:id', auth.hasRole('user'), controller.updateUser);
 
-router.get('/google/callback',passport.authenticate('google',{successRedirect: 'http://localhost:3000/api/users/done',failureRedirect : '/login'}),controller.AuthGoogle);
+router.get('/google/callback',passport.authenticate('google',{ session : false,successRedirect: 'http://localhost:3000/',failureRedirect : '/login'}),controller.AuthGoogle);
 
 
 module.exports = router
