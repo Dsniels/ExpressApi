@@ -27,7 +27,11 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:3000', // Permitir este origen
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
+  credentials: true // Permitir cookies de terceros
+}))
 app.use(bodyParser.json())
 app.use(passport.initialize())
 app.use(passport.session())
@@ -72,7 +76,7 @@ app.use('/request-type', (req, res, next) => {
   console.log('request type:', req.method)
   next()
 })
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080 
 
 app.listen(port, () =>
   console.log('aplicacion esta corriendo en el puerto 3000')
