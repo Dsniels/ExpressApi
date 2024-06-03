@@ -8,13 +8,13 @@ passport.use(
     new GoogleStrategy({
         clientID : process.env.CLIENT_ID,
         clientSecret : process.env.CLIENTE_SECRETE,
-        callbackURL : '/api/users/google/callback',
+        callbackURL : 'http://localhost:8080/api/users/google/callback',
         scope : ['profile', 'email'],
         passReqToCallback : true
     },
     async (request, accessToken, refreshToken, profile, done) => {
          console.log('Access Token:', accessToken);
-        console.log('Profile:', profile);
+        console.log('Profile:', profile.picture);
       try {
         // Aquí puedes verificar o crear el usuario en tu base de datos
         let user = await User.findOne({ 
@@ -26,7 +26,8 @@ passport.use(
             googleId: profile.id, 
             name: profile.given_name, 
             lastname : profile.family_name ,
-            email: profile.email 
+            email: profile.email,
+            image : profile.photos[0].value
           });
           const payload = {
             id : user.googleId,
@@ -41,6 +42,20 @@ passport.use(
         return done(error, null);
       }})    
 );
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// deserialize the cookieUserId to user in the database
+passport.deserializeUser((id, done) => {
+  User.findById(id)
+    .then(user => {
+      done(null, user);
+    })
+    .catch(e => {
+      done(new Error("Failed to deserialize an user"));
+    });
+});
 
 
 /* 

@@ -114,9 +114,27 @@ exports.updateUser = async (request, response) => {
 
 }
 
+exports.logout = (request, response) =>{
+  request.logout();
+  response.redirect('http://localhost:3000/')
+}
+
 
 exports.done = async(request, response) => {
-  response.json(request.user);
+
+  if(!request.user){
+    console.log('no user');
+
+  }else {
+ console.log('server user')
+  response.json({
+    success : true,
+    message :'Usuario authenticado con google',
+    user : request.user,
+    //cookies:request.cookies
+  
+  });
+}
 }
 
 
@@ -124,8 +142,8 @@ exports.done = async(request, response) => {
 
 
 exports.AuthGoogle = (request, response) => {
-  console.log(request);
-  response.send('authenticado con google');
-    
+  console.log(request); 
+  response.redirect(`http://localhost:8080/api/users/done`);
+
 
 }
