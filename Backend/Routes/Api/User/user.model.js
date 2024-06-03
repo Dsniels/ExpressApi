@@ -1,7 +1,6 @@
-const mongoose = require('mongoose')
-const direccion = require('../Direccion/direccion.model')
-const Schema = mongoose.Schema
-
+const mongoose = require("mongoose");
+const direccion = require("../Direccion/direccion.model");
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: {
@@ -19,27 +18,26 @@ const UserSchema = new Schema({
   role: {
     type: String,
     required: true,
-    default: 'user'
+    default: "user",
   },
   date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   image: {
     type: String,
-    default: '',
+    default: "",
+  },
+  googleId: {
+    type: String,
+  },
+  token: {
+    type: String,
+  },
+  Direccion: {
+    type: Schema.Types.ObjectId,
+    ref: "Direccion",
+  },
+});
 
-  },
-  googleId : {
-    type : String
-  },
-  token : {
-    type : String
-  },
-  Direccion : {
-    type : Schema.Types.ObjectId,
-    ref : 'Direccion'    
-  }
-})
-
-module.exports = User = mongoose.model('User', UserSchema)
+module.exports = User = mongoose.model("User", UserSchema);
