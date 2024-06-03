@@ -13,42 +13,38 @@ const cors = require('cors');
 require('dotenv').config();
 require('./config/redis');
 const session = require('express-session');
+const cookieParser = require("cookie-parser"); 
+const cookieSession = require('cookie-session')
 
 
 // middleware
+app.use(bodyParser.json())
+
 app.use(
   bodyParser.urlencoded({
     extended: false
   })
 )
-app.use(session({
-  secret : 'DASA',
-  resave : false,
-  saveUninitialized: true,
-}));
+app.use(cookieSession({
+  name : 'DASA',
+  keys : ['this app'],
+  maxAge: 24 * 60 * 60 * 100 
+})); 
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use(cors({
   origin: 'http://localhost:3000', // Permitir este origen
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
   credentials: true // Permitir cookies de terceros
 }))
-app.use(bodyParser.json())
-app.use(passport.initialize())
-app.use(passport.session())
+
+app.use(cookieParser());
 
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  )
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE, GET')
-    return res.status(200).json({})
-  }
-  next()
-})
+
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     res.status(401).send({
@@ -66,12 +62,32 @@ mongoose
   .then(() => console.log('MongoDb conectado'))
   .catch((err) => console.log(err))
 
+
+
+  const authCheck = (req, res, next) => {
+  if (!req.user) {
+    res.status(401).json({
+      authenticated: false,
+      message: "user has not been authenticated"
+    });
+  } else {
+    next();
+  }
+};
 // routas
 app.use('/api/users', users)
 app.use('/api/productos', producto)
 app.use('/api/ordenes', ordenes)
 app.use('/api/direccion', direccion)
 app.use('/api/carrito', carrito)
+app.get("/api/", authCheck, (req, res) => {
+  res.status(200).json({
+    authenticated: true,
+    message: "user successfully authenticated",
+    user: req.user,
+    cookies: req.cookies
+  });
+});
 app.use('/request-type', (req, res, next) => {
   console.log('request type:', req.method)
   next()
