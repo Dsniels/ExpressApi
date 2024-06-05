@@ -13,8 +13,6 @@ passport.use(
         passReqToCallback : true
     },
     async (request, accessToken, refreshToken, profile, done) => {
-         console.log('Access Token:', accessToken);
-        console.log('Profile:', profile.picture);
       try {
         // Aquí puedes verificar o crear el usuario en tu base de datos
         let user = await User.findOne({ 
@@ -36,7 +34,6 @@ passport.use(
           user.token = signToken(payload)
           await user.save();
         }
-        console.log(user);
         return done(null, user);
       } catch (error) {
         return done(error, null);

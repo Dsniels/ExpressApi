@@ -13,7 +13,6 @@ exports.registerUser = (request, response) => {
         return response.status(400).json({ email: 'El email ya existe' })
       } else {
         const newUser = new User(request.body)
-        // Hash password
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) console.log(err);
@@ -126,16 +125,14 @@ exports.perfil = async (request, response) => {
 exports.done = async(request, response) => {
 
   if(!request.user){
-    console.log('no user');
+    response.status(404)
 
   }else {
- console.log('server user')
   response.json({
     success : true,
     message :'Usuario authenticado con google',
     user : request.user,
     //cookies:request.cookies
-  
   });
 }
 }
