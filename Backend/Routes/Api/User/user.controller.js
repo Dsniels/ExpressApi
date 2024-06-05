@@ -119,6 +119,9 @@ exports.logout = (request, response) =>{
   response.redirect('http://localhost:3000/')
 }
 
+exports.perfil = async (request, response) => {
+  response.json(request.user);
+}
 
 exports.done = async(request, response) => {
 

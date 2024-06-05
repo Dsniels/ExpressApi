@@ -30,7 +30,7 @@ passport.use(
             image : profile.photos[0].value
           });
           const payload = {
-            id : user.googleId,
+            GoogleId : user.googleId,
             role : user.role
           }
           user.token = signToken(payload)

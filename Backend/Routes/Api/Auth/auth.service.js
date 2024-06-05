@@ -32,10 +32,8 @@ function isAuthenticated () {
       }
     })
     .use(async (request, response, next) => {
-
-      const user = await User.findById(request.auth.id)
+      const user = await User.findOne({$or: [{_id : request.auth.id},{googleId : request.auth.GoogleId}]})
       if (!user) return response.sendStatus(401)
-
       request.user = user
       next()
     })
@@ -54,6 +52,7 @@ function hasRole (roleRequired) {
       ) {
         next()
       } else {
+
         response.sendStatus(403)
       }
     })
