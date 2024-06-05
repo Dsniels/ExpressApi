@@ -1,32 +1,36 @@
-const controller = require('./user.controller')
-const express = require('express')
-const auth = require('../Auth/auth.service');
-const passport = require('passport');
+const controller = require("./user.controller");
+const express = require("express");
+const auth = require("../Auth/auth.service");
+const passport = require("passport");
 const router = express.Router();
 
+router.post("/registrarse", controller.registerUser);
 
+router.post("/login", controller.loginUser);
 
-router.post('/registrarse', controller.registerUser);
+router.get("/login/done", controller.done);
 
-router.post('/login', controller.loginUser);
+router.get("/logout", controller.logout);
 
-router.get('/login/done', controller.done);
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] }),
+);
 
-router.get('/logout', controller.logout)
+router.get("/perfil", auth.hasRole("user"), controller.perfil);
 
-router.get('/google', passport.authenticate('google',{scope : ['profile', 'email']} ));
+router.get("/perfil/all", auth.hasRole("manager"), controller.showUsers);
 
-router.get('/perfil', auth.hasRole('user'), controller.perfil)
+router.get("perfil/:id", auth.hasRole("manager"), controller.show);
 
-router.get('/perfil/all', auth.hasRole('manager'), controller.showUsers);
+router.put("/actualizar/:id", auth.hasRole("user"), controller.updateUser);
 
-router.get('perfil/:id', auth.hasRole('manager'), controller.show);
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:3000/",
+    failureRedirect: "/login",
+  }),
+);
 
-
-
-router.put('/actualizar/:id', auth.hasRole('user'), controller.updateUser);
-
-router.get('/google/callback',passport.authenticate('google',{successRedirect: 'http://localhost:3000/',failureRedirect : '/login'}));
-
-
-module.exports = router
+module.exports = router;
