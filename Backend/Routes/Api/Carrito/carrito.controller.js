@@ -20,9 +20,9 @@ exports.updateCarrito = async (request, response) => {
     console.log(request.body)
     const items = JSON.stringify(request.body.items)
     console.log('carrito item', items);
-    await redis.setEx(`${request.user._id.toHexString()}`, 300, items)
+    await redis.setEx(`${request.body.id}`, 30000, items)
     console.log('carritostring');
-    const carrito = await redis.get(`${request.user._id.toHexString()}`)
+    const carrito = await redis.get(`${request.body.id}`)
     console.log(carrito);
     if (!carrito) throw new Error('Error al actualizar el carrito')
     return response.status(200).json({id : request.user._id, items: JSON.parse(carrito)})
