@@ -10,7 +10,7 @@ router.post('/registrarse', controller.registerUser);
 
 router.post('/login', controller.loginUser);
 
-router.get('/login/done', controller.done);
+router.get('/login/done' ,controller.done);
 
 router.get('/logout', controller.logout)
 
@@ -21,8 +21,6 @@ router.get('/perfil', auth.hasRole('user'), controller.perfil)
 router.get('/perfil/all', auth.hasRole('manager'), controller.showUsers);
 
 router.get('perfil/:id', auth.hasRole('manager'), controller.show);
-
-
 
 router.put('/actualizar/:id', auth.hasRole('user'), controller.updateUser);
 

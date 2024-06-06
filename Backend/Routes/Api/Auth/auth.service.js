@@ -32,8 +32,17 @@ function isAuthenticated () {
       }
     })
     .use(async (request, response, next) => {
-      const user = await User.findOne({$or: [{_id : request.auth.id},{googleId : request.auth.GoogleId}]})
+      console.log(request.auth)
+      let id = request.auth.id;
+      let user
+      if(request.auth.GoogleId){
+        GoogleId = request.auth.GoogleId
+        user = await User.findOne({googleId: GoogleId})
+      }else{
+         user = await User.findById(id)
+      }      
       if (!user) return response.sendStatus(401)
+      console.log('user:',user);
       request.user = user
       next()
     })
