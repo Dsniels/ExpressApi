@@ -3,14 +3,33 @@ const Direccion = require('./direccion.model');
 
 
 
+exports.getDireccion = async (request, response) =>{
+  try {
+    console.log(request.user)
+    let direccion = await Direccion.findById(request.user.Direccion);
+    response.json(direccion);
+  } catch (error) {
+    console.log(error)
+  }
+}
 
+exports.getUserDireccion = async(request, response) =>{
+  try {
+    console.log(request.user)
+    let direccion = await Direccion.findById(request.params.id);
+    if(!direccion) response.status(404);
+    response.status(202).json(direccion);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 exports.ActualizarDireccion = async (request, response) => {
   try {
     console.log(request.user.Direccion.toHexString())
     if(request.user.Direccion){
-        var direccion = await Direccion.findByIdAndUpdate(request.user.Direccion.toHexString(),{...request.body});
+        let direccion = await Direccion.findByIdAndUpdate(request.user.Direccion.toHexString(),{...request.body});
         if(!direccion){
             const user = await User.findById(request.user._id);
         if (!user) {

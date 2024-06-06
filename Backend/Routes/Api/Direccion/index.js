@@ -5,6 +5,7 @@ const { hasRole } = require('../Auth/auth.service');
 
 
 router.put('/actualizarDireccion', hasRole('user'), controller.ActualizarDireccion);
-
+router.get('/', hasRole('user'), controller.getDireccion);
+router.get('/user/:id', hasRole('manager'), controller.getUserDireccion);
 
 module.exports = router;
