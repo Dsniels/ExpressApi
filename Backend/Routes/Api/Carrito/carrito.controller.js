@@ -4,10 +4,11 @@ exports.obtenerCarritoId = async (request, response) => {
   try {
     const carrito = await redis.get(`${request.params.id}`)
 
-    if (carrito) {
+    console.log("🚀 ~ exports.obtenerCarritoId= ~ carrito:", carrito)
+    if (carrito !== null) {
       return response.status(200).send(JSON.parse(carrito))
     } else {
-      return response.status(404)
+      return response.status(404).json({error : 'error'})
     }
   } catch (error) {
     return response.status(500).send(error)
