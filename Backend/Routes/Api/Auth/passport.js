@@ -8,7 +8,7 @@ passport.use(
     new GoogleStrategy({
         clientID : process.env.CLIENT_ID,
         clientSecret : process.env.CLIENTE_SECRETE,
-        callbackURL : 'http://localhost:8080/api/users/google/callback',
+        callbackURL : `${process.env.BASE_URL}/api/users/google/callback`,
         scope : ['profile', 'email'],
         passReqToCallback : true
     },
@@ -27,19 +27,22 @@ passport.use(
             email: profile.email,
             image : profile.photos[0].value
           });
-          const payload = {
+
+        }
+        const payload = {
             GoogleId : user.googleId,
             role : user.role
           }
           user.token = signToken(payload)
           await user.save();
-        }
+          
         return done(null, user);
       } catch (error) {
         return done(error, null);
       }})    
 );
 passport.serializeUser((user, done) => {
+  console.log("🚀 ~ user:", user)
   done(null, user);
 });
 
@@ -47,12 +50,14 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   User.findById(id)
     .then(user => {
+      console.log("🚀 ~ passport.deserializeUser ~ user:", user)
       done(null, user);
     })
     .catch(e => {
       done(new Error("Failed to deserialize an user"));
     });
 });
+
 
 
 /* 
