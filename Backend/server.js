@@ -34,6 +34,7 @@ app.use(cookieSession({
   sameSite: 'none', 
 
 })); 
+app.set('trust proxy', 2);
 
 app.use(passport.initialize())
 app.use(passport.session())
