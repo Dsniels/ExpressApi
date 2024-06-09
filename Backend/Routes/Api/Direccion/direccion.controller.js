@@ -27,9 +27,8 @@ exports.getUserDireccion = async(request, response) =>{
 
 exports.ActualizarDireccion = async (request, response) => {
   try {
-    console.log(request.user.Direccion.toHexString())
     if(request.user.Direccion){
-        let direccion = await Direccion.findByIdAndUpdate(request.user.Direccion.toHexString(),{...request.body});
+        let direccion = await Direccion.findByIdAndUpdate(request.user.Direccion.toHexString(),{...request.body},{returnDocument:"after"});
         if(!direccion){
             const user = await User.findById(request.user._id);
         if (!user) {
