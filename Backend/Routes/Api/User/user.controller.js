@@ -123,8 +123,12 @@ exports.perfil = async (request, response) => {
 }
 
 exports.done = async(request, response) => {
-
+  
+  console.log("🚀 ~ exports.done=async ~ request:",request.session)
   if(!request.user){
+    console.log("🚀 ~ exports.done=async ~ user:", request.user)
+    
+
     response.status(404)
 
   }else {
@@ -143,7 +147,7 @@ exports.done = async(request, response) => {
 
 exports.AuthGoogle = (request, response) => {
   console.log(request); 
-  response.redirect(`http://localhost:8080/api/users/done`);
+  response.redirect(`https://expressapiecommerce.azurewebsites.net/api/users/done`);
 
 
 }
