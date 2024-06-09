@@ -3,29 +3,22 @@ const paginacion = require('../Specificaciones/Paginacion');
 const paypal = require('../PayPal/paypal.service');
 
 exports.crearOrden = async (request, response) => {
-  const cart = {
-    ...request.body,
-    direccion : request.user.Direccion.toHexString()
-  }
+    const cart = {
+        ...request.body,
+        direccion: request.user.Direccion.toHexString()
+    };
 
-  
-  const {ResponseJson} = await paypal.createOrden(cart);
+    try {
+        const data = await paypal.createOrden(cart);
+        console.log("🚀 ~ exports.crearOrden= ~ data:", data);
+        await new Orden({...cart, paypalID : data.id}).save();
+        response.json(data); 
+    } catch (error) {
+        console.error("Error creating order:", error);
+        response.status(500).json({ error: error.message });
+    }
+};
 
-  try {
-    const newOrden = new Orden({
-      ...request.body,
-      id : ResponseJson.id,
-      user: request.user._id.toHexString(),
-      direccion : request.user.Direccion.toHexString()
-    })
-    newOrden
-      .save()
-      .then((res) => response.send(res))
-      .catch((err) => response.status(500).send(err))
-  } catch (error) {
-    return response.status(500).send('Ocurrio un Error')
-  }
-}
 
 exports.updateOrden = async (request, response) => {
   try {
@@ -56,7 +49,13 @@ exports.mostrarOrdenes = async (request, response) => {
 exports.captureOrden =async (req, res) => {
   try {
     const { orderID } = req.params;
-    const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
+    console.log("🚀 ~ exports.captureOrden= ~ orderID:", orderID)
+    const response = await paypal.captureOrder(orderID);
+    console.log("🚀 ~ exports.captureOrden= ~ response:", response)
+    const { jsonResponse, httpStatusCode } = response;
+    console.log("🚀 ~ exports.captureOrden= ~ jsonResponse:", jsonResponse)
+    const orden = await Orden.findOneAndUpdate({paypalID : orderID}, {pagado : 'Pagado'})
+    console.log("🚀 ~ exports.captureOrden= ~ orden:", orden)
     res.status(httpStatusCode).json(jsonResponse);
   } catch (error) {
     console.error("Failed to create order:", error);
