@@ -44,17 +44,18 @@ async function handleResponse(response) {
   }
 }
 
-exports.createOrden = async (cart) =>{
-
+exports.createOrden = async (cart) => {
+    console.log("🚀 ~ exports.createOrden= ~ cart:", cart)
+    
     const token = await generateAccessToken();
     const url = `${baseurl}/v2/checkout/orders`;
-    console.log(cart)
+
 
     const {Total, items, direccion} = cart;
-    console.log(Total, items, direccion);
+
 
     const adressUser = await Direccion.findById(direccion);
-    console.log(adressUser)
+
     let item_total = items.reduce((total, item) => {
     return total + (parseFloat(item.unit_amount.value) * parseInt(item.quantity));
     }, 0);
@@ -79,8 +80,8 @@ exports.createOrden = async (cart) =>{
             }
         ],
         application_context:{
-            return_url: 'http://localhost:3000/api/productos',
-            cancel_url : 'http://localhost:3000/api/'
+            return_url: 'https://expressapiecommerce.azurewebsites.net/api/productos',
+            cancel_url : 'https://expressapiecommerce.azurewebsites.net/api/'
         }
     }
 
@@ -101,27 +102,33 @@ exports.createOrden = async (cart) =>{
 
     
 }
-
 exports.captureOrder = async (orderID) => {
   const accessToken = await generateAccessToken();
   const url = `${baseurl}/v2/checkout/orders/${orderID}/capture`;
 
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-      // Uncomment one of these to force an error for negative testing (in sandbox mode only).
-      // Documentation:
-      // https://developer.paypal.com/tools/sandbox/negative-testing/request-headers/
-      // "PayPal-Mock-Response": '{"mock_application_codes": "INSTRUMENT_DECLINED"}'
-      // "PayPal-Mock-Response": '{"mock_application_codes": "TRANSACTION_REFUSED"}'
-      // "PayPal-Mock-Response": '{"mock_application_codes": "INTERNAL_SERVER_ERROR"}'
-    },
-  }).then(response => {
-        return response.json();
-  })
- 
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    console.log("🚀 ~ exports.captureOrder= ~ captureOrder:", response);
+
+    // Ensure we wait for the JSON response
+    const jsonResponse = await response.json();
+
+    // Return the entire response object
+    return {
+      jsonResponse,
+      httpStatusCode: response.status,
+    };
+  } catch (error) {
+    console.error("Failed to capture order:", error);
+    throw error;
+  }
 };
 
 
