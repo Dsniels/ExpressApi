@@ -32,7 +32,6 @@ function isAuthenticated () {
       }
     })
     .use(async (request, response, next) => {
-      console.log(request.auth)
       let id = request.auth.id;
       let user
       if(request.auth.GoogleId){
@@ -42,8 +41,8 @@ function isAuthenticated () {
          user = await User.findById(id)
       }      
       if (!user) return response.sendStatus(401)
-      console.log('user:',user);
       request.user = user
+      console.log("🚀 ~ .use ~ user:", user)
       next()
     })
 }
