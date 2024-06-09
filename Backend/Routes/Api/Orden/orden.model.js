@@ -1,50 +1,50 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const ordenItem = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   price: {
     type: Number,
-    required: true
+    required: true,
   },
   marca: {
     type: String,
   },
   quantity: {
     type: String,
-    require: true
+    require: true,
   },
-  unit_amount:{
-    type:Object
-  }
-})
+  unit_amount: {
+    type: Object,
+  },
+});
 
 const OrdenSchema = new Schema({
   Total: {
     type: Number,
-    required: true
+    required: true,
   },
-  id : {
-    type : String
+  id: {
+    type: String,
   },
   items: [ordenItem],
   user: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: "User",
   },
-  direccion :{
+  direccion: {
     type: Schema.ObjectId,
-    ref : 'Direccion'
+    ref: "Direccion",
   },
-  paypalID : {
-    type : String
+  paypalID: {
+    type: String,
   },
-  pagado : {
-    type : String,
-    default: 'En processo'
-  }
-})
-module.exports = Orden = mongoose.model('Orden', OrdenSchema)
+  pagado: {
+    type: String,
+    default: "En processo",
+  },
+});
+module.exports = Orden = mongoose.model("Orden", OrdenSchema);
