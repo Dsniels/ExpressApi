@@ -12,12 +12,11 @@ const direccion = require('./Routes/Api/Direccion');
 const cors = require('cors');
 require('dotenv').config();
 require('./config/redis');
-const session = require('express-session');
 const cookieParser = require("cookie-parser"); 
 const cookieSession = require('cookie-session')
 
 
-// middleware
+
 app.use(bodyParser.json())
 
 app.use(
@@ -25,10 +24,15 @@ app.use(
     extended: false
   })
 )
+
+
 app.use(cookieSession({
   name : 'DASA',
   keys : ['this app'],
-  maxAge: 24 * 60 * 60 * 100 
+  maxAge: 24 * 60 * 60 * 100,
+  secure : true,
+  sameSite: 'none', 
+
 })); 
 
 app.use(passport.initialize())
@@ -36,9 +40,10 @@ app.use(passport.session())
 
 
 app.use(cors({
-  origin: 'http://localhost:3000', // Permitir este origen
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
-  credentials: true // Permitir cookies de terceros
+  origin: 'http://localhost:3000', 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, 
+  secure : true
 }))
 
 app.use(cookieParser());
