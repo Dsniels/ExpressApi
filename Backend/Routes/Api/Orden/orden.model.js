@@ -38,6 +38,13 @@ const OrdenSchema = new Schema({
   direccion :{
     type: Schema.ObjectId,
     ref : 'Direccion'
+  },
+  paypalID : {
+    type : String
+  },
+  pagado : {
+    type : String,
+    default: 'En processo'
   }
 })
 module.exports = Orden = mongoose.model('Orden', OrdenSchema)
