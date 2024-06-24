@@ -1,17 +1,55 @@
 const Orden = require('./orden.model')
 const paginacion = require('../Specificaciones/Paginacion');
 const paypal = require('../PayPal/paypal.service');
+const redis = require('../../../config/redis')
+const Producto = require('../Productos/producto.model')
 
 exports.crearOrden = async (request, response) => {
-    const cart = {
+
+try{
+  const carritoId = request.body.CarritoId;
+    // 2. Obtener el carrito desde Redis
+    const carrito = JSON.parse(await redis.get(carritoId));
+    console.log('Carrito Redis', carrito)
+
+    // 3. Asegurarse de que el carrito es un array de objetos de tipo Producto
+    if (!Array.isArray(carrito)) {
+      throw new Error("El carrito no es un array válido.");
+    }
+
+    // 4. Crear una lista vacía para almacenar los productos validados
+    const productosValidados = [];
+    let total =0;
+    // 5. Iterar sobre cada producto en el carrito
+    for (const producto of carrito) {
+      // a. Usar el id del producto para buscarlo en la base de datos
+      const productoDB = await Producto.findById(producto.id);
+      // b. Si el producto existe, agregarlo a la lista de productos validados
+      if (productoDB) {
+        let productoValidado = {
+          ...producto,
+          precio: productoDB.precio // Reemplazar el precio con el de la base de datos
+        };
+        total += productoDB.precio * producto.quantity;
+        console.log('Producto databse', productoDB);
+        productosValidados.push(productoValidado);
+      } else {
+        console.log(`Producto con ID ${producto.id} no encontrado en la base de datos.`);
+      }
+    }
+
+    console.log('Productos Validos', productosValidados);
+  const cart = {
         ...request.body,
         direccion: request.user.Direccion.toHexString()
     };
 
-    try {
+
+
+ 
         const data = await paypal.createOrden(cart);
         console.log("🚀 ~ exports.crearOrden= ~ data:", data);
-        await new Orden({...cart, paypalID : data.id}).save();
+        await new Orden({...cart, paypalID : data.id, Total: total}).save();
         response.json(data); 
     } catch (error) {
         console.error("Error creating order:", error);
@@ -70,6 +108,14 @@ exports.mostrarOrdenPorId = async (request, response) => {
     return response.status(200).send(orden)
   } catch (error) {
     return response.send(error)
+  }
+}
+
+exports.userOrdenes = async (request, response) => {
+  try {
+    const ordenes = await Orden.find({user : request.user._id})
+  } catch (error) {
+    
   }
 }
 
