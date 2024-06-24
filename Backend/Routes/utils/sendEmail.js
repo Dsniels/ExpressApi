@@ -21,7 +21,7 @@ const sendEmail = async (email, subject, payload, template) => {
       return {
         from: process.env.FROM_EMAIL,
         to: email,
-        subject: subject,
+        subject,
         html: compiledTemplate(payload),
       };
     };
