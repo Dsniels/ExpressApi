@@ -26,6 +26,10 @@ const ProductScheme = new Schema({
     type: String,
     require: false,
     default: ''
+  },
+  description : {
+    type :String,
+    default:''
   }
 })
 
