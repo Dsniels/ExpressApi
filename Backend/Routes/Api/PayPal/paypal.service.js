@@ -45,19 +45,20 @@ async function handleResponse(response) {
 }
 
 exports.createOrden = async (cart) => {
-    console.log("🚀 ~ exports.createOrden= ~ cart:", cart)
+
     
     const token = await generateAccessToken();
     const url = `${baseurl}/v2/checkout/orders`;
 
 
-    const {Total, items, direccion} = cart;
+    const { items, direccion} = cart;
+    console.log('cart', cart)
 
 
     const adressUser = await Direccion.findById(direccion);
 
     let item_total = items.reduce((total, item) => {
-    return total + (parseFloat(item.unit_amount.value) * parseInt(item.quantity));
+    return total + (parseFloat(item.precio) * parseInt(item.quantity));
     }, 0);
 
     const payload = {

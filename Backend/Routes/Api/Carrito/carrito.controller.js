@@ -2,11 +2,11 @@ const redis = require('../../../config/redis')
 
 exports.obtenerCarritoId = async (request, response) => {
   try {
-    const carrito = await redis.get(`${request.params.id}`)
+    const carrito = await redis.get(`${request.user._id}`)
 
     console.log("🚀 ~ exports.obtenerCarritoId= ~ carrito:", carrito)
     if (carrito !== null) {
-      return response.status(200).send(JSON.parse(carrito))
+      return response.status(200).json({items : JSON.parse(carrito), id : request.user._id})
     } else {
       return response.status(404).json({error : 'error'})
     }
@@ -21,9 +21,9 @@ exports.updateCarrito = async (request, response) => {
     console.log(request.body)
     const items = JSON.stringify(request.body.items)
     console.log('carrito item', items);
-    await redis.setEx(`${request.body.id}`, 30000, items)
+    await redis.setEx(`${request.user._id}`, 30000, items)
     console.log('carritostring');
-    const carrito = await redis.get(`${request.body.id}`)
+    const carrito = await redis.get(`${request.user._id}`)
     console.log(carrito);
     if (!carrito) throw new Error('Error al actualizar el carrito')
     return response.status(200).json({id : request.user._id, items: JSON.parse(carrito)})
