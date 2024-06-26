@@ -7,6 +7,6 @@ router.get('/:id', controller.getProduct)
 router.get('/', controller.getProducts)
 router.post('/agregar', hasRole('manager') ,controller.registrarProducto)
 router.put('/actualizar/:id', hasRole('manager'), controller.updateProducto)
-router.delete('/eliminar', hasRole('manager') ,controller.deleteProducto)
+router.delete('/eliminar/:id', hasRole('manager') ,controller.deleteProducto)
 
 module.exports = router

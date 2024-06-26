@@ -8,7 +8,8 @@ exports.obtenerCarritoId = async (request, response) => {
     if (carrito !== null) {
       return response.status(200).json({items : JSON.parse(carrito), id : request.user._id})
     } else {
-      return response.status(404).json({error : 'error'})
+      await redis.setEx(`${request.user._id}`, 3000, '[]')
+      return response.status(200).json({items : [], id : request.user._id})
     }
   } catch (error) {
     return response.status(500).send(error)

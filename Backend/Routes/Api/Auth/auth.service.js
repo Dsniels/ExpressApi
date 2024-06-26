@@ -42,7 +42,7 @@ function isAuthenticated () {
       }      
       if (!user) return response.sendStatus(401)
       request.user = user
-      console.log("🚀 ~ .use ~ user:", user)
+
       next()
     })
 }

@@ -3,9 +3,11 @@ const paginacion = require('../Specificaciones/Paginacion')
 
 exports.registrarProducto = (request, response) => {
   try {
+
     Producto.findOne({ name: request.body.name }).then((producto) => {
-      if (!producto) {
-        return response.status(400).json({ name: 'Producto ya existe' })
+
+      if (producto) {
+        return response.status(400).send({ error: 'Producto ya existe' })
       }
       const newProduct = new Producto({ ...request.body })
       newProduct
@@ -13,8 +15,9 @@ exports.registrarProducto = (request, response) => {
         .then((RESPONSE) => response.send(RESPONSE))
         .catch((err) => console.log(err))
     })
-    return null;
+    return response.status(200);
   } catch (error) {
+    console.log(error)
     return response.status(500).send('Ocurrió un error al obtener el producto')
   }
 }
@@ -70,7 +73,7 @@ exports.updateProducto = async (request, response) => {
 
 exports.deleteProducto = async (request, response) => {
   try {
-    await Producto.findByIdAndDelete(request.query.id)
+    await Producto.findByIdAndDelete(request.params.id)
     return response.status(200).send('Producto eliminado exitosamente')
   } catch (error) {
     return response
