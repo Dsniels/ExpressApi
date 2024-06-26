@@ -1,83 +1,81 @@
-const Producto = require('./producto.model')
-const paginacion = require('../Specificaciones/Paginacion')
+const Producto = require("./producto.model");
+const paginacion = require("../Specificaciones/Paginacion");
 
 exports.registrarProducto = (request, response) => {
   try {
-
     Producto.findOne({ name: request.body.name }).then((producto) => {
-
       if (producto) {
-        return response.status(400).send({ error: 'Producto ya existe' })
+        return response.status(400).send({ error: "Producto ya existe" });
       }
-      const newProduct = new Producto({ ...request.body })
+      const newProduct = new Producto({ ...request.body });
       newProduct
         .save()
         .then((RESPONSE) => response.send(RESPONSE))
-        .catch((err) => console.log(err))
-    })
+        .catch((err) => console.log(err));
+    });
     return response.status(200);
   } catch (error) {
-    console.log(error)
-    return response.status(500).send('Ocurrió un error al obtener el producto')
+    console.log(error);
+    return response.status(500).send("Ocurrió un error al obtener el producto");
   }
-}
+};
 
 exports.getProduct = async (request, response) => {
   try {
-    const producto = await Producto.findById(request.params.id).exec()
+    const producto = await Producto.findById(request.params.id).exec();
     if (!producto) {
-      return response.send(404)
+      return response.send(404);
     }
-    return response.send(producto)
+    return response.send(producto);
   } catch (error) {
-    return response.status(500).send('Ocurrió un error al obtener el producto')
+    return response.status(500).send("Ocurrió un error al obtener el producto");
   }
-}
+};
 
 exports.getProducts = async (request, response) => {
   try {
-    const query = request.query
-    const exclude = ['sort', 'page', 'limit', 'pageSize']
-    const queryObj = { ...query }
+    const query = request.query;
+    const exclude = ["sort", "page", "limit", "pageSize"];
+    const queryObj = { ...query };
     exclude.forEach((element) => {
-      delete queryObj[element]
-    })
+      delete queryObj[element];
+    });
 
-    let consulta = Producto.find(queryObj).sort(request.query.sort)
-    consulta = paginacion(consulta, query)
-    const productos = await consulta
+    let consulta = Producto.find(queryObj).sort(request.query.sort);
+    consulta = paginacion(consulta, query);
+    const productos = await consulta;
 
     if (!productos) {
-      return response.send(404)
+      return response.send(404);
     }
-    return response.send(productos)
+    return response.send(productos);
   } catch (error) {
-    return response.status(500).send('Ocurrió un error al obtener el producto')
+    return response.status(500).send("Ocurrió un error al obtener el producto");
   }
-}
+};
 
 exports.updateProducto = async (request, response) => {
   try {
     const productoUpdate = await Producto.findByIdAndUpdate(
       request.params.id,
-      request.body
-    )
+      request.body,
+    );
     if (!productoUpdate) {
-      return response.json({ message: 'El producto no existe' })
+      return response.json({ message: "El producto no existe" });
     }
-    return response.send(productoUpdate)
+    return response.send(productoUpdate);
   } catch (error) {
-    return response.status(500).send('Ocurrio un Error al actualizar Producto')
+    return response.status(500).send("Ocurrio un Error al actualizar Producto");
   }
-}
+};
 
 exports.deleteProducto = async (request, response) => {
   try {
-    await Producto.findByIdAndDelete(request.params.id)
-    return response.status(200).send('Producto eliminado exitosamente')
+    await Producto.findByIdAndDelete(request.params.id);
+    return response.status(200).send("Producto eliminado exitosamente");
   } catch (error) {
     return response
       .status(500)
-      .send('No se pudo eliminar el producto, intente mas tarde')
+      .send("No se pudo eliminar el producto, intente mas tarde");
   }
-}
+};
