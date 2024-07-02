@@ -4,6 +4,9 @@ const User = require('./user.model')
 const keys = require('../../../config/keys')
 const paginacion = require('../Specificaciones/Paginacion')
 const { signToken } = require('../Auth/auth.service')
+const Direccion = require('../Direccion/direccion.model');
+
+
 
 exports.registerUser = (request, response) => {
 
@@ -69,7 +72,7 @@ exports.loginUser = (request, response) => {
 }
 
 exports.show = async function (request, response) {
-  const user = await User.findById(request.params.id).exec()
+  const user = await User.findById(request.params.id).populate("Direccion")
   if (!user) {
     return response.send(404)
   }
@@ -84,11 +87,12 @@ exports.showUsers = async (request, response) => {
     delete queryObj[element]
   })
   const users = await paginacion(
-    User.find(queryObj).sort(query.sort),
+    User.find(queryObj).sort(query.sort).populate("Direccion"),
     request.query
   )
 
   if (!users) return response.status(404).json({ message: 'No hay usuarios' })
+
 
   return response.json(users)
 }
@@ -119,15 +123,14 @@ exports.logout = (request, response) =>{
 }
 
 exports.perfil = async (request, response) => {
+
   response.json(request.user);
 }
 
 exports.done = async(request, response) => {
   
-  console.log("🚀 ~ exports.done=async ~ request:",request.session)
   if(!request.user){
-    console.log("🚀 ~ exports.done=async ~ user:", request.user)
-    
+  
 
     response.status(404)
 

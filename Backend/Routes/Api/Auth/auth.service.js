@@ -38,7 +38,7 @@ function isAuthenticated () {
         GoogleId = request.auth.GoogleId
         user = await User.findOne({googleId: GoogleId})
       }else{
-         user = await User.findById(id)
+         user = await User.findById(id).populate("Direccion")
       }      
       if (!user) return response.sendStatus(401)
       request.user = user
