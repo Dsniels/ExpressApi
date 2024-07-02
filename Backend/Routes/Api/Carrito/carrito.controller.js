@@ -4,7 +4,6 @@ exports.obtenerCarritoId = async (request, response) => {
   try {
     const carrito = await redis.get(`${request.user._id}`)
 
-    console.log("🚀 ~ exports.obtenerCarritoId= ~ carrito:", carrito)
     if (carrito !== null) {
       return response.status(200).json({items : JSON.parse(carrito), id : request.user._id})
     } else {
@@ -19,13 +18,9 @@ exports.obtenerCarritoId = async (request, response) => {
 
 exports.updateCarrito = async (request, response) => {
   try {
-    console.log(request.body)
     const items = JSON.stringify(request.body.items)
-    console.log('carrito item', items);
     await redis.setEx(`${request.user._id}`, 30000, items)
-    console.log('carritostring');
     const carrito = await redis.get(`${request.user._id}`)
-    console.log(carrito);
     if (!carrito) throw new Error('Error al actualizar el carrito')
     return response.status(200).json({id : request.user._id, items: JSON.parse(carrito)})
   } catch (error) {
